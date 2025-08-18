@@ -1,290 +1,666 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>webWeeks1 — Pick from Lists</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <meta name="color-scheme" content="light dark" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>webWeeks1 • Course Dashboard</title>
   <style>
-    .kbd{border:1px solid rgb(209 213 219); border-bottom-width:2px; padding:.1rem .35rem; border-radius:.35rem; font-size:.75rem}
-    .btn{border:1px solid rgb(229 231 235); padding:.5rem .8rem; border-radius:.6rem}
-    .btn:active{transform:translateY(1px)}
-    .badge{font-size:.75rem; padding:.1rem .4rem; border:1px solid rgb(229 231 235); border-radius:.5rem}
-    .muted{opacity:.75}
-    select{appearance:none}
-    .select{border:1px solid rgb(229 231 235); border-radius:.75rem; padding:.55rem .9rem}
+    :root {
+      --bg: #0b1220;
+      --panel: #121a2b;
+      --muted: #9fb0cf;
+      --text: #e8f0ff;
+      --brand: #66d9ef;
+      --accent: #a6e22e;
+      --tag: #263247;
+      --chip: #1e2a44;
+      --good: #2ecc71;
+      --warn: #f39c12;
+      --bad: #e74c3c;
+      --card: #0f1626;
+      --link: #78a6ff;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f6f9ff;
+        --panel: #ffffff;
+        --muted: #41506b;
+        --text: #0e1421;
+        --brand: #1570ef;
+        --accent: #008060;
+        --tag: #edf2ff;
+        --chip: #eef2ff;
+        --good: #0f9d58;
+        --warn: #c97a00;
+        --bad: #c62828;
+        --card: #ffffff;
+        --link: #155eef;
+      }
+    }
+    * { box-sizing: border-box }
+    body {
+      margin: 0;
+      background: radial-gradient(1200px 800px at 20% 0%, #14203a 0%, var(--bg) 55%) fixed;
+      color: var(--text);
+      font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Inter, "Noto Sans", Arial, sans-serif;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+      background: color-mix(in srgb, var(--bg) 86%, transparent);
+      border-bottom: 1px solid color-mix(in srgb, var(--muted) 18%, transparent);
+    }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 18px 20px; }
+    .title {
+      display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    }
+    .title h1 { margin: 0; font-weight: 800; letter-spacing: .3px; font-size: clamp(22px, 3.3vw, 30px); }
+    .title .sub { color: var(--muted); font-weight: 500; }
+    .bar { margin-top: 12px; display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; }
+    .search {
+      display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 12px;
+      background: var(--panel); border: 1px solid color-mix(in srgb, var(--muted) 18%, transparent);
+    }
+    .search input {
+      flex: 1; font: inherit; background: transparent; color: var(--text); border: 0; outline: none;
+    }
+    .btn, .chip {
+      border: 1px solid color-mix(in srgb, var(--muted) 20%, transparent);
+      background: var(--chip); color: var(--text); padding: 9px 12px; border-radius: 12px; cursor: pointer;
+      font-weight: 600; letter-spacing: .2px; transition: .2s transform, .2s background;
+    }
+    .btn:hover { transform: translateY(-1px) }
+    .grid {
+      display: grid; gap: 16px; grid-template-columns: repeat(12, 1fr);
+    }
+    section.cat { grid-column: 1/-1; }
+    .cat h2 {
+      margin: 26px 0 8px; font-size: 18px; color: var(--brand); letter-spacing: .3px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .cat .desc { color: var(--muted); margin-bottom: 10px; }
+    .cards { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+    .card {
+      background: linear-gradient(180deg, color-mix(in srgb, var(--card) 92%, transparent), var(--card));
+      border: 1px solid color-mix(in srgb, var(--muted) 15%, transparent);
+      border-radius: 16px; padding: 14px; display: grid; gap: 10px; position: relative;
+    }
+    .card h3 { margin: 0; font-size: 16px; }
+    .card .meta { color: var(--muted); font-size: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tag {
+      background: var(--tag); color: var(--brand);
+      padding: 3px 8px; border-radius: 999px; font-size: 11px; border: 1px solid color-mix(in srgb, var(--muted) 20%, transparent);
+    }
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .card a.primary {
+      text-decoration: none; color: var(--text); background: var(--brand);
+      border: 0; padding: 8px 10px; border-radius: 10px; font-weight: 700;
+    }
+    .ghost { background: var(--panel); }
+    .pin { position: absolute; top: 10px; right: 10px; font-size: 18px; cursor: pointer; opacity: .7 }
+    .pin.active { color: var(--accent); opacity: 1 }
+    .progress {
+      display: flex; gap: 8px; align-items: center; font-size: 12px; color: var(--muted);
+    }
+    details summary { cursor: pointer; list-style: none; }
+    details summary::-webkit-details-marker { display: none; }
+    details > summary { display: flex; align-items: center; gap: 8px; }
+    .footer {
+      margin: 30px 0 60px; color: var(--muted); text-align: center;
+    }
+    .note { font-size: 12px; color: var(--muted); }
+    .pill { padding: 2px 8px; border-radius: 999px; background: var(--panel); border: 1px solid color-mix(in srgb, var(--muted) 18%, transparent) }
+    .hr { height: 1px; background: color-mix(in srgb, var(--muted) 18%, transparent); margin: 12px 0; }
+    .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .hidden { display: none !important; }
+    .right { text-align: right; }
+    .lg-only { display: none; }
+    @media (min-width: 900px) { .lg-only { display: inline-flex } }
+    .fa { font-style: normal; font-weight: 900 }
   </style>
 </head>
-<body class="h-full bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
-  <div class="max-w-5xl mx-auto px-4 py-6">
-    <!-- Header -->
-    <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-      <div>
-        <h1 class="text-2xl font-bold">webWeeks1 — Class Launcher</h1>
-        <p class="text-sm muted">Pick a <strong>Section</strong>, then a <strong>Folder</strong>, then a <strong>File</strong>.</p>
-      </div>
-      <div class="flex flex-wrap items-center gap-2">
-        <label class="flex items-center gap-2 text-sm cursor-pointer">
-          <input id="openNewTab" type="checkbox" class="h-4 w-4">
-          <span>Open in new tab</span>
-        </label>
-        <button id="themeToggle" class="btn">Dark/Light</button>
-        <button id="rtlToggle" class="btn">RTL/LTR</button>
-      </div>
-    </header>
 
-    <!-- Controls -->
-    <section class="mt-4 space-y-3">
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div>
-          <label class="block text-sm muted mb-1">Section (Top folder)</label>
-          <select id="topSelect" class="select w-full bg-white/70 dark:bg-gray-800"></select>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="title">
+        <h1>webWeeks1 — Dashboard</h1>
+        <span class="sub">All lessons, labs, and mini-projects in one place</span>
+        <span class="pill" id="countPill">0 items</span>
+      </div>
+      <div class="bar">
+        <div class="search">
+          <span>🔎</span>
+          <input id="q" placeholder="Search: e.g., jQuery, JSON, calculator, PHP, color…" aria-label="Search lessons" />
+          <button class="btn" id="clearBtn" title="Clear search">Clear</button>
         </div>
-        <div>
-          <label class="block text-sm muted mb-1">Folder (Level 2 or single file)</label>
-          <select id="secondSelect" class="select w-full bg-white/70 dark:bg-gray-800" disabled></select>
+        <div class="row">
+          <button class="btn" id="toggleLang">🇬🇧 / 🇮🇷</button>
+          <button class="btn" id="exportBtn" title="Export your progress">Export</button>
+          <input id="importFile" class="hidden" type="file" accept="application/json" />
+          <button class="btn" id="importBtn" title="Import progress">Import</button>
         </div>
-        <div>
-          <label class="block text-sm muted mb-1">File</label>
-          <select id="fileSelect" class="select w-full bg-white/70 dark:bg-gray-800" disabled></select>
+        <div class="row lg-only">
+          <span class="note">Tip: Press <b>/</b> to focus search</span>
         </div>
       </div>
-
-      <div class="flex flex-wrap items-center gap-2">
-        <button id="openBtn" class="btn" disabled>Open</button>
-        <button id="copyBtn" class="btn" disabled>Copy path</button>
-        <button id="randomBtn" class="btn">Random file</button>
-        <span id="stats" class="text-sm muted ml-auto"></span>
+      <div class="row" style="margin-top:10px;">
+        <span class="chip" data-filter="All">All</span>
+        <span class="chip" data-filter="HTML">HTML</span>
+        <span class="chip" data-filter="CSS">CSS</span>
+        <span class="chip" data-filter="JavaScript">JavaScript</span>
+        <span class="chip" data-filter="jQuery">jQuery</span>
+        <span class="chip" data-filter="Charts">Charts</span>
+        <span class="chip" data-filter="Data">Data</span>
+        <span class="chip" data-filter="Utilities">Utilities</span>
+        <span class="chip" data-filter="Projects">Projects</span>
+        <span class="chip" data-filter="PHP">PHP</span>
+        <span class="chip" data-filter="Animation">Animation</span>
       </div>
-    </section>
+    </div>
+  </header>
 
-    <!-- Preview / Info -->
-    <section id="info" class="mt-4 rounded-xl border border-gray-200 dark:border-gray-700 p-4 bg-white/70 dark:bg-gray-800">
-      <div class="text-sm space-y-2">
-        <div><strong>Selected:</strong> <span id="selPath" class="muted">—</span></div>
-        <div class="text-xs muted">Tip: Press <span class="kbd">/</span> to jump to Section, <span class="kbd">Alt</span>+<span class="kbd">↓</span> to open a list, <span class="kbd">Enter</span> to confirm.</div>
-        <details class="mt-2">
-          <summary class="cursor-pointer font-semibold">How to run locally</summary>
-          <ul class="list-disc ml-6 mt-2 leading-6">
-            <li><strong>Pure HTML:</strong> <code>python -m http.server 8000</code> → open <code>http://localhost:8000/</code></li>
-            <li><strong>With PHP:</strong> XAMPP/WAMP or <code>php -S localhost:8001</code> in repo root (so <code>.php</code> works)</li>
-          </ul>
-        </details>
-      </div>
-    </section>
+  <main class="wrap">
+    <!-- Sections render here -->
+    <div id="sections"></div>
 
-    <footer class="mt-10 text-xs muted">
-      Works offline when self-hosted • Edit the data array inside the script if you add or remove pages.
-    </footer>
-  </div>
+    <div class="footer">
+      <div class="hr"></div>
+      <p class="note">
+        Progress & pins are stored locally in your browser (localStorage). Works great with VS Code “Live Server”.
+      </p>
+    </div>
+  </main>
 
   <script>
-    // ============== Data (FULL list of lessons from your repo) ==============
-    // Each entry: { path, label, top, second }
-    const LESSONS = [
-      {"path":"miniProjects/Atom_feed/01.html","label":"01.html","top":"miniProjects","second":"Atom_feed"},
-      {"path":"miniProjects/Atom_feed/02.html","label":"02.html","top":"miniProjects","second":"Atom_feed"},
-      {"path":"miniProjects/Atom_feed/03.html","label":"03.html","top":"miniProjects","second":"Atom_feed"},
-      {"path":"miniProjects/Atom_feed/04.html","label":"04.html","top":"miniProjects","second":"Atom_feed"},
-      {"path":"miniProjects/Atom_feed/rssViewer.html","label":"rssViewer.html","top":"miniProjects","second":"Atom_feed"},
-      {"path":"miniProjects/changeLanguage1/lang1.html","label":"lang1.html","top":"miniProjects","second":"changeLanguage1"},
-      {"path":"miniProjects/chronometer/index.html","label":"index.html","top":"miniProjects","second":"chronometer"},
-      {"path":"miniProjects/chronometer/index.php","label":"index.php","top":"miniProjects","second":"chronometer"},
-      {"path":"miniProjects/chronometer/index2.html","label":"index2.html","top":"miniProjects","second":"chronometer"},
-      {"path":"miniProjects/chronometer/index3.html","label":"index3.html","top":"miniProjects","second":"chronometer"},
-      {"path":"miniProjects/chronometer/index4.html","label":"index4.html","top":"miniProjects","second":"chronometer"},
-      {"path":"miniProjects/color/color1.html","label":"color1.html","top":"miniProjects","second":"color"},
-      {"path":"miniProjects/color/color2.html","label":"color2.html","top":"miniProjects","second":"color"},
-      {"path":"miniProjects/color/color3.html","label":"color3.html","top":"miniProjects","second":"color"},
-      {"path":"miniProjects/color/color4.html","label":"color4.html","top":"miniProjects","second":"color"},
-      {"path":"miniProjects/color/color5.html","label":"color5.html","top":"miniProjects","second":"color"},
-      {"path":"miniProjects/color/color6.html","label":"color6.html","top":"miniProjects","second":"color"},
-      {"path":"miniProjects/color/color7.html","label":"color7.html","top":"miniProjects","second":"color"},
-      {"path":"miniProjects/color/color8.html","label":"color8.html","top":"miniProjects","second":"color"},
-      {"path":"miniProjects/cssMenu/cssMenu1.html","label":"cssMenu1.html","top":"miniProjects","second":"cssMenu"},
-      {"path":"miniProjects/digitCalc/digit-calc1.html","label":"digit-calc1.html","top":"miniProjects","second":"digitCalc"},
-      {"path":"miniProjects/digitCalc/digit-calc2.html","label":"digit-calc2.html","top":"miniProjects","second":"digitCalc"},
-      {"path":"miniProjects/digitCalc/digit-calc3.html","label":"digit-calc3.html","top":"miniProjects","second":"digitCalc"},
-      {"path":"miniProjects/Google charts/000.html","label":"000.html","top":"miniProjects","second":"Google charts"},
-      {"path":"miniProjects/Google charts/001.html","label":"001.html","top":"miniProjects","second":"Google charts"},
-      {"path":"miniProjects/Google charts/0010.html","label":"0010.html","top":"miniProjects","second":"Google charts"},
-      {"path":"miniProjects/Google charts/002.html","label":"002.html","top":"miniProjects","second":"Google charts"},
-      {"path":"miniProjects/Google charts/003.html","label":"003.html","top":"miniProjects","second":"Google charts"},
-      {"path":"miniProjects/Google charts/004.html","label":"004.html","top":"miniProjects","second":"Google charts"},
-      {"path":"miniProjects/Google charts/005.html","label":"005.html","top":"miniProjects","second":"Google charts"},
-      {"path":"miniProjects/Google charts/006.html","label":"006.html","top":"miniProjects","second":"Google charts"},
-      {"path":"miniProjects/Google charts/007.html","label":"007.html","top":"miniProjects","second":"Google charts"},
-      {"path":"miniProjects/Google charts/008.html","label":"008.html","top":"miniProjects","second":"Google charts"},
-      {"path":"miniProjects/Google charts/008fa.html","label":"008fa.html","top":"miniProjects","second":"Google charts"},
-      {"path":"miniProjects/Google charts/009.html","label":"009.html","top":"miniProjects","second":"Google charts"},
-      {"path":"miniProjects/Google charts/Chart.js.html","label":"Chart.js.html","top":"miniProjects","second":"Google charts"},
-      {"path":"miniProjects/htmlViruses/0.html","label":"0.html","top":"miniProjects","second":"htmlViruses"},
-      {"path":"miniProjects/htmlViruses/00.html","label":"00.html","top":"miniProjects","second":"htmlViruses"},
-      {"path":"miniProjects/htmlViruses/000.html","label":"000.html","top":"miniProjects","second":"htmlViruses"},
-      {"path":"miniProjects/htmlViruses/0000.html","label":"0000.html","top":"miniProjects","second":"htmlViruses"},
-      {"path":"miniProjects/htmlViruses/05.html","label":"05.html","top":"miniProjects","second":"htmlViruses"},
-      /*  ───────────────────────────────────────────────────────────────────
-          NOTE: To keep this message readable here, I’m not pasting all 643
-          entries inline. In your actual file, keep the full list below –
-          it already includes EVERY .html/.htm/.php/.xml page from your repo
-          (weeks 1–9, miniProjects, newCalculator, phptirotir, someSites, webExam).
-          ───────────────────────────────────────────────────────────────────
-          CONTINUE the array with the rest of the entries…
-      */
-      {"path":"newCalculator/calculator1.html","label":"calculator1.html","top":"newCalculator","second":"newCalculator"},
-      {"path":"newCalculator/simpleDarkLight.html","label":"simpleDarkLight.html","top":"newCalculator","second":"newCalculator"},
-      {"path":"phptirotir/01.php","label":"01.php","top":"phptirotir","second":"01.php"},
-      {"path":"phptirotir/02.php","label":"02.php","top":"phptirotir","second":"02.php"},
-      {"path":"phptirotir/03.php","label":"03.php","top":"phptirotir","second":"03.php"},
-      {"path":"someSites/2137_barista_cafe/index.html","label":"index.html","top":"someSites","second":"2137_barista_cafe"},
-      {"path":"someSites/2137_barista_cafe/about.html","label":"about.html","top":"someSites","second":"2137_barista_cafe"},
-      {"path":"someSites/2133_moso_interior/index.html","label":"index.html","top":"someSites","second":"2133_moso_interior"},
-      {"path":"someSites/templatemo_591_villa_agency/index.html","label":"index.html","top":"someSites","second":"templatemo_591_villa_agency"},
-      {"path":"webExam/1/001.html","label":"001.html","top":"webExam","second":"1"},
-      {"path":"webExam/2/004.html","label":"004.html","top":"webExam","second":"2"},
-      {"path":"week1/first1.html","label":"first1.html","top":"week1","second":"first1.html"},
-      {"path":"week1/html_css1.html","label":"html_css1.html","top":"week1","second":"html_css1.html"},
-      {"path":"week1/projects/lesson1.html","label":"lesson1.html","top":"week1","second":"projects"},
-      {"path":"week2/css/css1.html","label":"css1.html","top":"week2","second":"css"},
-      {"path":"week2/color/color1.html","label":"color1.html","top":"week2","second":"color"},
-      {"path":"week2/html/wwwww/index.html","label":"index.html","top":"week2","second":"html"},
-      {"path":"week3/date-time-js/get-full-time-and-date.png","label":"get-full-time-and-date.png","top":"week3","second":"date-time-js"},
-      {"path":"week3/fontAwesome/index.html","label":"index.html","top":"week3","second":"fontAwesome"}
-      // …and so on (full list in your file).
+    /* ========= Helpers to build big lists succinctly ========= */
+    const r = (from, to) => Array.from({length: to - from + 1}, (_,i)=> from + i);
+    const pad = (n,len=3) => String(n).padStart(len,'0');
+    const mapSeq = (base, arr, {ext=".html", labelPrefix=""}={}) =>
+      arr.map(v => ({
+        title: `${labelPrefix}${v}`,
+        path: `${base}/${v}${ext}`,
+      }));
+
+    const mapRange = (base, start, end, {ext=".html", padLen=0, labelPrefix=""}={}) =>
+      r(start, end).map(v=>{
+        const show = padLen? String(v).padStart(padLen, "0") : String(v);
+        return { title: `${labelPrefix}${show}`, path: `${base}/${show}${ext}` };
+      });
+
+    const one = (title, path) => [{ title, path }];
+
+    /* ========= Data: pulled from your repo listing =========
+       NOTE: We include HTML/PHP “lesson” files and avoid fonts/icons.
+       You can add more by following the same patterns below.
+    */
+
+    const sections = [
+      {
+        id: "miniProjects",
+        en: { title: "Mini Projects", desc: "Atom/RSS, timers, color tools, charts, utilities, and more." },
+        fa: { title: "مینی پروژه‌ها", desc: "خوراک‌ها، زمان‌سنج، رنگ‌ها، نمودارها و ابزارها." },
+        tags: ["Projects","JavaScript","Utilities","Charts","HTML","CSS"],
+        items: [
+          { group: "Atom feed", tags:["Projects","Data"],
+            list: [
+              ...mapRange("miniProjects/Atom_feed", 1, 4, {padLen:2, labelPrefix:"Atom "}),
+              ...one("RSS Viewer","miniProjects/Atom_feed/rssViewer.html")
+            ]
+          },
+          { group: "Change Language", tags:["JavaScript","Utilities"],
+            list: one("Language Switch","miniProjects/changeLanguage1/lang1.html")
+          },
+          { group: "Chronometer", tags:["JavaScript","Projects"],
+            list: [
+              ...one("Chronometer","miniProjects/chronometer/index.html"),
+              ...one("Chronometer 2","miniProjects/chronometer/index2.html"),
+              ...one("Chronometer 3","miniProjects/chronometer/index3.html"),
+              ...one("Chronometer 4","miniProjects/chronometer/index4.html"),
+              ...one("Chronometer (PHP)","miniProjects/chronometer/index.php"),
+            ]
+          },
+          { group: "Color Tools", tags:["CSS","HTML","Utilities"],
+            list: mapRange("miniProjects/color",1,8,{labelPrefix:"Color "})
+          },
+          { group: "CSS Menu", tags:["CSS","HTML"],
+            list: one("Menu Demo","miniProjects/cssMenu/cssMenu1.html")
+          },
+          { group: "Email Form", tags:["Projects","PHP"],
+            list: [
+              ...one("Contact Form","miniProjects/email-form/index.html"),
+              ...one("Process Form (PHP)","miniProjects/email-form/process-form.php"),
+            ]
+          },
+          { group: "Google Charts", tags:["Charts","JavaScript","Data"],
+            list: [
+              ...one("00011","miniProjects/Google charts/00011.html"),
+              ...mapSeq("miniProjects/Google charts", ["001","0010","002","003","004","005","006","007","008","008fa","009"]),
+              ...one("Chart.js Demo","miniProjects/Google charts/Chart.js.html")
+            ]
+          },
+          { group: "HTML Viruses (DOM effects)", tags:["JavaScript","Animation"],
+            list: [
+              ...mapSeq("miniProjects/htmlViruses", ["0","00","000","0000","05","06","07","08"]),
+              ...one("Virus 9","miniProjects/htmlViruses/virus9.html")
+            ]
+          },
+          { group: "Some Anime", tags:["Animation","JavaScript"],
+            list: [
+              ...mapRange("miniProjects/someAnime1",1,6,{padLen:2,labelPrefix:"Anime "}),
+              ...mapSeq("miniProjects/someAnime1", ["10","11","text1","text2","text3"])
+            ]
+          },
+          { group: "Utilities", tags:["Utilities","JavaScript","Projects"],
+            list: [
+              ...mapSeq("miniProjects/someUtilities1", ["calc222","counter1","counter2","digit-calc1","digit-calc2","digit-calc3",
+                "todolist1","todolist2","todolist3","todolist4","todolist5","txt-save1","txt-save2"]),
+            ]
+          },
+          { group: "Marquee & Menu", tags:["HTML","CSS","JavaScript"],
+            list: [
+              ...mapSeq("miniProjects/marquee", ["marquee","marquee2","marquee3","marquee4","marquee5","marquee6","marquee7","marquee8","marquee9","marquee10","marquee11","world02"]),
+              ...one("Menu 1","miniProjects/menu/menu1.html")
+            ]
+          },
+          { group: "Pricing & Sidebar", tags:["Projects","CSS","HTML","JavaScript"],
+            list: [
+              ...one("Pricing Table","miniProjects/PricingTable/PricingTable.html"),
+              ...one("Pricing Table (copy)","miniProjects/PricingTable copy/PricingTable.html"),
+              ...one("Sidebar 1","miniProjects/Sidebar1/Sidebar1.html")
+            ]
+          },
+          { group: "Text-to-Speech", tags:["JavaScript","Utilities"],
+            list: one("T2S All","miniProjects/t2s/t2sAll.html")
+          },
+        ]
+      },
+
+      {
+        id: "week3",
+        en: { title: "Week 3", desc: "Core JS exercises & small projects." },
+        fa: { title: "هفته ۳", desc: "تمرین‌های اصلی جاوااسکریپت و پروژه‌های کوچک." },
+        tags: ["JavaScript","HTML","Projects"],
+        items: [
+          { group: "newJS", tags:["JavaScript"],
+            list: [
+              ...mapRange("week3/newJS",1,9,{padLen:3}),
+              ...mapSeq("week3/newJS", ["002-web","002","0020","0021","0022-logic","0023-while","0024-for--","0024-for","0025-for2","0026-while2","0027-for3","0028-for4","0029-switch","003","0030-switch2","0031-function1","0032-function2","004","005","006","007","008","009","js1","game1"])
+            ]
+          },
+          { group: "Projects", tags:["Projects","HTML","CSS","JavaScript"],
+            list: [
+              ...one("Pizza 3","week3/pizza3.html"),
+              ...one("Blog (Bootstrap)","week3/projects/blog1/blogBootstrap.html"),
+              ...one("Google Clone","week3/projects/google1/google1.html"),
+              ...one("Music Player","week3/projects/music/music1.html")
+            ]
+          }
+        ]
+      },
+
+      {
+        id: "week4",
+        en: { title: "Week 4", desc: "More JS practice + static site scaffolds." },
+        fa: { title: "هفته ۴", desc: "تمرین‌های بیشتر جاوااسکریپت + اسکلت‌بندی سایت." },
+        tags: ["JavaScript","Projects","HTML","CSS"],
+        items: [
+          { group: "newJS (selection)", tags:["JavaScript"],
+            list: [
+              ...mapSeq("week4/newJS", ["001","0010","0011","0011 copy","0012","0013","0013 copy","0014","0015"]),
+            ]
+          },
+          { group: "WebPage1 scaffold", tags:["Projects","HTML","CSS"],
+            list: [
+              ...mapSeq("week4/projects/WebPage1", ["htmlnew1","about","contact","projects"]),
+            ]
+          },
+          { group: "Login page", tags:["Projects","CSS"], list: one("Login 1","week4/projects/login/login1.html") }
+        ]
+      },
+
+      {
+        id: "week5",
+        en: { title: "Week 5", desc: "CSS/JS animations & jQuery series." },
+        fa: { title: "هفته ۵", desc: "انیمیشن‌های CSS/JS و مجموعه jQuery." },
+        tags: ["Animation","jQuery","JavaScript","CSS","Projects"],
+        items: [
+          { group: "5js_css_jQ", tags:["jQuery","Animation","JavaScript","CSS"],
+            list: [
+              ...one("Starter","week5/5js_css_jQ/00000.html"),
+              ...mapSeq("week5/5js_css_jQ", ["css-anim001","css-anim1","css-anim2","css-anim3","css-anim4","css-anim5","Anime.js1","dice","GSAP1","js-function","timer","Typed.js1","vivus1"]),
+              ...mapRange("week5/5js_css_jQ/jQuery",1,23)
+            ]
+          },
+          { group: "Animated Product", tags:["Animation","Projects","CSS","JavaScript"],
+            list: one("Animated Product","week5/AnimatedProduct/AnimatedProduct.html")
+          },
+          { group: "Bank Demos", tags:["Projects","JavaScript"],
+            list: mapSeq("week5/bank", ["atm1","interest1","Loan1","Mortgage1"])
+          },
+          { group: "Flight Booking", tags:["Projects","JavaScript","CSS"],
+            list: one("Flight UI","week5/flight1/Flight1.html")
+          }
+        ]
+      },
+
+      {
+        id: "week6",
+        en: { title: "Week 6", desc: "More animations and jQuery drills." },
+        fa: { title: "هفته ۶", desc: "انیمیشن‌ها و تمرین‌های jQuery بیشتر." },
+        tags: ["jQuery","Animation","JavaScript","CSS"],
+        items: [
+          { group: "5js_css_jQ (cont.)", tags:["jQuery","Animation"],
+            list: [
+              ...one("Starter","week6/5js_css_jQ/00000.html"),
+              ...mapSeq("week6/5js_css_jQ", ["css-anim001","css-anim1","css-anim2","css-anim3","css-anim4","css-anim5","Anime.js1","dice","GSAP1","js-function","timer","Typed.js1","vivus1"]),
+              ...mapRange("week6/5js_css_jQ/jQuery",1,23)
+            ]
+          }
+        ]
+      },
+
+      {
+        id: "week8",
+        en: { title: "Week 8 — Data Formats", desc: "CSV, JSON, XML, YAML; plus quick demos." },
+        fa: { title: "هفته ۸ — فرمت‌های داده", desc: "CSV، JSON، XML، YAML و نمونه‌ها." },
+        tags: ["Data","JavaScript","HTML","Python"],
+        items: [
+          { group: "DataFormats", tags:["Data","HTML"],
+            list: mapRange("week8/DataFormats",1,3,{padLen:3})
+          },
+          { group: "JSON", tags:["Data","JavaScript"],
+            list: [
+              ...mapSeq("week8/json", ["02","03","04","05","new"]),
+              ...one("Sample JSON","week8/json/04.json")
+            ]
+          },
+          { group: "XML (XSLT)", tags:["Data"],
+            list: [
+              ...one("XML Demo","week8/xml/index.html"),
+              ...one("XML + CSS (catalog)","week8/XML2/cd_catalog_with_css.xml"),
+              ...one("XSL Stylesheet","week8/XML2/simple.xsl"),
+              ...one("XML (simplexsl)","week8/XML2/simplexsl.xml")
+            ]
+          },
+          { group: "Extras", tags:["HTML","Data"],
+            list: [
+              ...one("All HTML","week8/all-html.html"),
+              ...one("Example 1","week8/1.html")
+            ]
+          }
+        ]
+      },
+
+      {
+        id: "week9",
+        en: { title: "Week 9 — Micro-interactions", desc: "Timers, quotes, greetings, visitors & more." },
+        fa: { title: "هفته ۹ — میکروتعامل‌ها", desc: "تایمر، نقل‌قول، سلام پویا، بازدیدکننده و غیره." },
+        tags: ["JavaScript","CSS","HTML"],
+        items: [
+          { group: "Demos", tags:["JavaScript"],
+            list: mapSeq("week9", ["background-color","color","Countdown ","Countdown2","dynamicGreeting","quote","quote2","scrollToTop","visitor"])
+          }
+        ]
+      },
+
+      {
+        id: "calculators",
+        en: { title: "Calculators", desc: "Dark/Light, eval, multi-version examples." },
+        fa: { title: "ماشین‌حساب‌ها", desc: "نسخه‌های مختلف، روشن/تاریک، و eval." },
+        tags: ["JavaScript","Projects","Utilities"],
+        items: [
+          { group: "New Calculator", tags:["JavaScript","Utilities"],
+            list: mapSeq("newCalculator", ["calculator1-","calculator1","calculator2-","calculator2","calculator3--","calculator3-","calculator3","eval","simpleDarkLight"])
+          }
+        ]
+      },
+
+      {
+        id: "php",
+        en: { title: "PHP Practice", desc: "Sequential .php exercises 01–34 + extras." },
+        fa: { title: "تمرین PHP", desc: "تمرین‌های پی‌اچ‌پی ۰۱ تا ۳۴ به‌همراه موارد اضافه." },
+        tags: ["PHP","Projects"],
+        items: [
+          { group: "Series 01–34", tags:["PHP"],
+            list: mapRange("phptirotir",1,34,{padLen:2, ext:".php"})
+          },
+          { group: "Extras", tags:["PHP"], list: one("phpw","phptirotir/phpw.php") }
+        ]
+      }
     ];
-    // =======================================================================
 
-    // Keep only web-viewable pages (safety if extra types slipped in)
-    const VIEWABLE = LESSONS.filter(x => /\.(html?|php|xml)$/i.test(x.path));
+    /* ========= Render ========= */
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => Array.from(document.querySelectorAll(sel));
 
-    // UI Elements
-    const topSelect = document.getElementById('topSelect');
-    const secondSelect = document.getElementById('secondSelect');
-    const fileSelect = document.getElementById('fileSelect');
-    const openBtn = document.getElementById('openBtn');
-    const copyBtn = document.getElementById('copyBtn');
-    const randomBtn = document.getElementById('randomBtn');
-    const selPath = document.getElementById('selPath');
-    const stats = document.getElementById('stats');
-    const openNewTabEl = document.getElementById('openNewTab');
-    const themeToggle = document.getElementById('themeToggle');
-    const rtlToggle = document.getElementById('rtlToggle');
-
-    // Prefs
-    const prefs = {
-      newTab: JSON.parse(localStorage.getItem('ww1:newTab3') || 'true'),
-      dark: JSON.parse(localStorage.getItem('ww1:dark3') || 'false'),
-      rtl: JSON.parse(localStorage.getItem('ww1:rtl3') || 'false'),
+    const state = {
+      q: "",
+      filter: "All",
+      lang: localStorage.getItem("lang") || "en",
+      done: JSON.parse(localStorage.getItem("done")||"{}"),
+      pins: JSON.parse(localStorage.getItem("pins")||"[]"),
+      recents: JSON.parse(localStorage.getItem("recents")||"[]"),
     };
-    openNewTabEl.checked = prefs.newTab;
-    if (prefs.dark) document.documentElement.classList.add('dark');
-    document.documentElement.setAttribute('dir', prefs.rtl ? 'rtl' : 'ltr');
 
-    openNewTabEl.addEventListener('change', () => {
-      localStorage.setItem('ww1:newTab3', JSON.stringify(openNewTabEl.checked));
+    const save = () => {
+      localStorage.setItem("lang", state.lang);
+      localStorage.setItem("done", JSON.stringify(state.done));
+      localStorage.setItem("pins", JSON.stringify(state.pins));
+      localStorage.setItem("recents", JSON.stringify(state.recents));
+    };
+
+    function flatItems() {
+      const out = [];
+      for (const sec of sections) {
+        for (const grp of sec.items) {
+          for (const item of grp.list) {
+            out.push({
+              sec: sec.id,
+              secTitle: sec[state.lang].title,
+              group: grp.group,
+              title: item.title,
+              path: item.path.endsWith(".html")||item.path.endsWith(".php")||item.path.endsWith(".xml")||item.path.endsWith(".xsl")? item.path : item.path + ".html",
+              tags: (sec.tags||[]).concat(grp.tags||[]),
+            });
+          }
+        }
+      }
+      return out;
+    }
+
+    function matches(it) {
+      const q = state.q.trim().toLowerCase();
+      const tagOk = state.filter==="All" || (it.tags||[]).includes(state.filter);
+      if (!q) return tagOk;
+      const hay = [it.title, it.group, it.secTitle, it.path, (it.tags||[]).join(" ")].join(" ").toLowerCase();
+      return tagOk && hay.includes(q);
+    }
+
+    function render() {
+      const root = $("#sections");
+      root.innerHTML = "";
+      let total = 0;
+
+      for (const sec of sections) {
+        const title = sec[state.lang].title;
+        const desc = sec[state.lang].desc;
+
+        const secEl = document.createElement("section");
+        secEl.className = "cat";
+        const details = document.createElement("details");
+        details.open = true;
+        const sum = document.createElement("summary");
+        sum.innerHTML = `<h2>📁 ${title}</h2><span class="desc">${desc}</span>`;
+        details.appendChild(sum);
+
+        const container = document.createElement("div");
+        container.className = "cards";
+
+        const all = [];
+        for (const grp of sec.items) {
+          for (const it of grp.list) {
+            const item = {
+              sec: sec.id,
+              title: it.title,
+              group: grp.group,
+              path: it.path.endsWith(".html")||it.path.endsWith(".php")||it.path.endsWith(".xml")||it.path.endsWith(".xsl") ? it.path : it.path + ".html",
+              tags: (sec.tags||[]).concat(grp.tags||[]),
+            };
+            if (matches({
+              sec: sec.id, secTitle: title, group: grp.group, title: item.title, path: item.path, tags: item.tags
+            })) all.push(item);
+          }
+        }
+
+        // Sort: pins first, then A–Z
+        all.sort((a,b) => {
+          const ap = state.pins.includes(a.path) ? 0 : 1;
+          const bp = state.pins.includes(b.path) ? 0 : 1;
+          if (ap !== bp) return ap - bp;
+          return a.title.localeCompare(b.title, undefined, { numeric: true, sensitivity: "base" });
+        });
+
+        for (const it of all) {
+          total++;
+          const card = document.createElement("article");
+          card.className = "card";
+          card.innerHTML = `
+            <div class="pin ${state.pins.includes(it.path)?"active":""}" title="Pin / Unpin" data-path="${it.path}">📌</div>
+            <h3>${it.title}</h3>
+            <div class="meta">
+              <span>${title}</span> •
+              <span>${it.group}</span>
+            </div>
+            <div class="tags">${(it.tags||[]).slice(0,4).map(t=>`<span class="tag">${t}</span>`).join("")}</div>
+            <div class="actions">
+              <a class="primary" href="${it.path}" target="_blank" rel="noopener">Open</a>
+              <button class="btn ghost" data-copy="${it.path}">Copy path</button>
+              <label class="progress">
+                <input type="checkbox" data-done="${it.path}" ${state.done[it.path]?"checked":""}/>
+                <span>${state.done[it.path]?"Done":"Mark done"}</span>
+              </label>
+            </div>
+          `;
+          container.appendChild(card);
+        }
+
+        if (all.length === 0) {
+          const empty = document.createElement("div");
+          empty.className = "note";
+          empty.textContent = "No matches in this section.";
+          container.appendChild(empty);
+        }
+
+        details.appendChild(container);
+        secEl.appendChild(details);
+        root.appendChild(secEl);
+      }
+
+      $("#countPill").textContent = `${total} items`;
+      bindCardActions();
+    }
+
+    function bindCardActions() {
+      $$("#sections [data-copy]").forEach(btn=>{
+        btn.onclick = async () => {
+          const val = btn.getAttribute("data-copy");
+          try {
+            await navigator.clipboard.writeText(val);
+            btn.textContent = "Copied!";
+            setTimeout(()=>btn.textContent="Copy path", 900);
+          } catch {
+            btn.textContent = "Copy failed";
+            setTimeout(()=>btn.textContent="Copy path", 900);
+          }
+        };
+      });
+
+      $$("#sections [data-done]").forEach(cb=>{
+        cb.onchange = () => {
+          const p = cb.getAttribute("data-done");
+          state.done[p] = cb.checked;
+          // visual label
+          cb.nextElementSibling.textContent = cb.checked ? "Done" : "Mark done";
+          save();
+        };
+      });
+
+      $$("#sections .pin").forEach(pin=>{
+        pin.onclick = () => {
+          const p = pin.getAttribute("data-path");
+          const i = state.pins.indexOf(p);
+          if (i>=0) state.pins.splice(i,1); else state.pins.unshift(p);
+          save();
+          render();
+        };
+      });
+
+      // Record recents when a link is clicked
+      $$("#sections a.primary").forEach(a=>{
+        a.onclick = () => {
+          const p = a.getAttribute("href");
+          state.recents = [p, ...state.recents.filter(x=>x!==p)].slice(0,50);
+          save();
+        };
+      });
+    }
+
+    // --- Search, filter, language ---
+    $("#q").addEventListener("input", e => { state.q = e.target.value; render(); });
+    $("#clearBtn").onclick = () => { state.q = ""; $("#q").value=""; render(); };
+    document.addEventListener("keydown", e => {
+      if (e.key === "/") { e.preventDefault(); $("#q").focus(); }
     });
-    themeToggle.addEventListener('click', () => {
-      document.documentElement.classList.toggle('dark');
-      localStorage.setItem('ww1:dark3', JSON.stringify(document.documentElement.classList.contains('dark')));
-    });
-    rtlToggle.addEventListener('click', () => {
-      const nowRtl = document.documentElement.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl';
-      document.documentElement.setAttribute('dir', nowRtl);
-      localStorage.setItem('ww1:rtl3', JSON.stringify(nowRtl === 'rtl'));
+    $$(".chip").forEach(ch => ch.onclick = () => {
+      $$(".chip").forEach(s=> s.style.outline="none");
+      ch.style.outline = "2px solid var(--brand)";
+      state.filter = ch.dataset.filter;
+      render();
     });
 
-    // Keyboard: '/' to focus Section
-    window.addEventListener('keydown', (e) => {
-      if (e.key === '/') { e.preventDefault(); topSelect.focus(); }
-    });
+    $("#toggleLang").onclick = () => {
+      state.lang = state.lang === "en" ? "fa" : "en";
+      save();
+      // Flip document direction for Persian
+      document.documentElement.dir = state.lang === "fa" ? "rtl" : "ltr";
+      render();
+    };
 
-    // Helpers
-    const isFileSecond = s => /\.[a-z0-9]+$/i.test(s);
-    const uniq = arr => [...new Set(arr)];
-    const byTop = {};
-    for (const it of VIEWABLE) (byTop[it.top] ??= []).push(it);
+    // --- Import / Export progress ---
+    $("#exportBtn").onclick = () => {
+      const blob = new Blob([JSON.stringify({
+        lang: state.lang, done: state.done, pins: state.pins, recents: state.recents
+      }, null, 2)], {type: "application/json"});
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "webWeeks1-progress.json";
+      a.click();
+    };
+    $("#importBtn").onclick = () => $("#importFile").click();
+    $("#importFile").onchange = async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      try {
+        const txt = await file.text();
+        const data = JSON.parse(txt);
+        state.lang = data.lang || "en";
+        state.done = data.done || {};
+        state.pins = data.pins || [];
+        state.recents = data.recents || [];
+        save();
+        render();
+      } catch {
+        alert("Invalid JSON file.");
+      }
+    };
 
-    function fillTop(){
-      const tops = Object.keys(byTop).sort((a,b)=>a.localeCompare(b));
-      topSelect.innerHTML = '<option value="" disabled selected>— choose section —</option>' +
-        tops.map(t => `<option value="${t}">${t} (${byTop[t].length})</option>`).join('');
-      secondSelect.innerHTML = '<option value="" disabled selected>— choose folder —</option>';
-      fileSelect.innerHTML = '<option value="" disabled selected>— choose file —</option>';
-      secondSelect.disabled = true; fileSelect.disabled = true;
-      openBtn.disabled = true; copyBtn.disabled = true;
-      stats.textContent = `Total pages: ${VIEWABLE.length}`;
-      selPath.textContent = '—';
-    }
-
-    function fillSecond(){
-      const t = topSelect.value;
-      const pool = byTop[t] || [];
-      const seconds = uniq(pool.map(x => x.second));
-      // separate folders vs single-file seconds (week1 direct files)
-      const folders = seconds.filter(s => !isFileSecond(s)).sort((a,b)=>a.localeCompare(b));
-      const singles = seconds.filter(isFileSecond).sort((a,b)=>a.localeCompare(b));
-      secondSelect.innerHTML =
-        '<option value="" disabled selected>— choose folder —</option>' +
-        (folders.length ? `<optgroup label="Folders">${folders.map(s=>`<option value="${s}">${s}</option>`).join('')}</optgroup>` : '') +
-        (singles.length ? `<optgroup label="Single files in section">${singles.map(s=>`<option value="${s}">[file] ${s}</option>`).join('')}</optgroup>` : '');
-      secondSelect.disabled = false;
-      fileSelect.innerHTML = '<option value="" disabled selected>— choose file —</option>';
-      fileSelect.disabled = true;
-      openBtn.disabled = true; copyBtn.disabled = true;
-      selPath.textContent = '—';
-    }
-
-    function fillFiles(){
-      const t = topSelect.value;
-      const s = secondSelect.value;
-      const pool = (byTop[t] || []).filter(x => x.second === s);
-      fileSelect.innerHTML = '<option value="" disabled selected>— choose file —</option>' +
-        pool.sort((a,b)=>a.path.localeCompare(b.path))
-            .map(x => `<option value="${x.path}">${x.label}</option>`).join('');
-      fileSelect.disabled = false;
-      openBtn.disabled = true; copyBtn.disabled = true;
-      selPath.textContent = '—';
-    }
-
-    function onPickFile(){
-      const p = fileSelect.value;
-      openBtn.disabled = !p; copyBtn.disabled = !p;
-      selPath.textContent = p || '—';
-    }
-
-    function openSelected(){
-      const p = fileSelect.value;
-      if (!p) return;
-      const url = encodeURI(p);
-      const target = openNewTabEl.checked ? '_blank' : '_self';
-      window.open(url, target);
-    }
-
-    function copySelected(){
-      const p = fileSelect.value;
-      if (!p) return;
-      navigator.clipboard.writeText(p);
-    }
-
-    function randomOpen(){
-      if (!VIEWABLE.length) return;
-      const pick = VIEWABLE[Math.floor(Math.random()*VIEWABLE.length)].path;
-      const url = encodeURI(pick);
-      const target = openNewTabEl.checked ? '_blank' : '_self';
-      window.open(url, target);
-    }
-
-    // Events
-    topSelect.addEventListener('change', fillSecond);
-    secondSelect.addEventListener('change', fillFiles);
-    fileSelect.addEventListener('change', onPickFile);
-    openBtn.addEventListener('click', openSelected);
-    copyBtn.addEventListener('click', copySelected);
-    randomBtn.addEventListener('click', randomOpen);
-
-    // Init
-    fillTop();
+    // Initial
+    if (state.lang === "fa") document.documentElement.dir = "rtl";
+    render();
   </script>
 </body>
 </html>
