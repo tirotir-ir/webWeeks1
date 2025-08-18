@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"> <!-- Set the language of the document to English -->
+
+<head>
+  <meta charset="UTF-8"> <!-- Specify the character encoding for the HTML document -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive design settings -->
+  <title>Simple Google Map - London</title> <!-- Title of the page -->
+  <style>
+    /* Height and width for the map */
+    #map {
+      height: 400px;
+      /* Height of the map */
+      width: 100%;
+      /* Width of the map */
+    }
+  </style>
+</head>
+
+<body>
+  <h3>Simple Google Map - London</h3> <!-- Title for the map -->
+
+  <!-- Embed Google Map using iframe -->
+  <iframe id="map"
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d198204.32213113386!2d-0.510375!3d51.286760999999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761e1c8d5b24d5%3A0x4c4e58da93b158cc!2sLondon!5e0!3m2!1sen!2suk!4v1683760248532!5m2!1sen!2suk"
+    width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy">
+  </iframe>
+
+</body>
+
+</html>
+
+<!-- 
+    Q: What is Google Maps?
+    A: Google Maps is a web mapping service developed by Google. It provides users with directions, maps, and geographical information.
+    
+    Q: How can I change the location displayed on the map?
+    A: You can change the location by updating the latitude and longitude values in the `src` URL of the `<iframe>` element.
+    
+    Q: Is an API key required to use Google Maps in an iframe?
+    A: No, when using an iframe to embed Google Maps, an API key is not required.
+    
+    Q: Can I customize the appearance of the map?
+    A: The iframe provides limited customization options, but you can modify the view, such as zoom level and the location.
+    
+    Q: What features does Google Maps offer?
+    A: Google Maps offers a variety of features, including street view, satellite imagery, directions, local business information, and more.
+-->

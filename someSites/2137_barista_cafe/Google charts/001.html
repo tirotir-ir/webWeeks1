@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- لینک کتابخانه Google Charts -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    // بارگذاری کتابخانه Google Charts
+    google.charts.load('current', {'packages':['corechart']});
+    
+    // تعریف تابع برای رسم نمودار
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      // ایجاد داده‌ها برای نمودار
+      var data = google.visualization.arrayToDataTable([
+        ['سال', 'فروش'],
+        ['1399', 1000],
+        ['1400', 1500],
+        ['1401', 2000],
+        ['1402', 2500]
+      ]);
+
+      // تنظیمات نمودار
+      var options = {
+        title: 'نمودار خطی فروش در چهار سال اخیر',
+        curveType: 'function',
+        legend: { position: 'bottom' }
+      };
+
+      // ایجاد یک نمودار خطی جدید و نمایش آن در المان با id "chart_div"
+      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+      // نمایش نمودار
+      chart.draw(data, options);
+    }
+  </script>
+</head>
+<body>
+  <!-- المانی برای نمایش نمودار -->
+  <div id="chart_div" style="width: 900px; height: 500px;"></div>
+</body>
+</html>

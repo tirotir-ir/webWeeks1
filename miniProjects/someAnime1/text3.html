@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  .scrolling-container {
+    width: 100px; /* Adjust width as needed */
+    height: 150px; /* Adjust height as needed */
+    overflow: hidden;
+    position: relative;
+  }
+
+  .scrolling-text {
+    animation: scroll 10s linear infinite;
+    display: block;
+    margin-top: 100%;
+  }
+
+  @keyframes scroll {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(0%);
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="scrolling-container">
+  <div class="scrolling-text">
+    This is a vertical scrolling effect using HTML and CSS.
+  </div>
+</div>
+
+</body>
+</html>

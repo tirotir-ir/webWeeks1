@@ -1,0 +1,24 @@
+//Displaying a JSON Array in HTML
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fruits List</title>
+</head>
+<body>
+    <h1>Fruits List</h1>
+    <ul id="fruits-list"></ul>
+
+    <script>
+        var jsonData = {
+            "fruits": ["apple", "banana", "orange", "grape"]
+        };
+        
+        var ul = document.getElementById('fruits-list');
+        jsonData.fruits.forEach(function(fruit) {
+            var li = document.createElement('li');
+            li.textContent = fruit;
+            ul.appendChild(li);
+        });
+    </script>
+</body>
+</html>

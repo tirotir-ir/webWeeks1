@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Loan Eligibility Checker</title>
+    <style>
+        /* Add your CSS styling here */
+    </style>
+</head>
+<body>
+    <h1>Loan Eligibility Checker</h1>
+    <label for="income">Monthly Income:</label>
+    <input type="number" id="income">
+    <label for="creditScore">Credit Score:</label>
+    <input type="number" id="creditScore">
+    <label for="loanAmount">Loan Amount:</label>
+    <input type="number" id="loanAmount">
+    <button id="checkButton">Check Eligibility</button>
+    <p id="result"></p>
+
+    <script>
+        document.getElementById("checkButton").addEventListener("click", function () {
+            const income = parseFloat(document.getElementById("income").value);
+            const creditScore = parseFloat(document.getElementById("creditScore").value);
+            const loanAmount = parseFloat(document.getElementById("loanAmount").value);
+
+            // You can customize this logic based on your eligibility criteria
+            const isEligible = (income > 5000) && (creditScore > 700);
+
+            if (isEligible) {
+                document.getElementById("result").innerText = `Congratulations! You are eligible for a loan of $${loanAmount}`;
+            } else {
+                document.getElementById("result").innerText = `Sorry, you are not eligible for the requested loan amount.`;
+            }
+        });
+    </script>
+</body>
+</html>

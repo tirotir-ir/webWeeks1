@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<h2>Quiz</h2>
+<p id="question"></p>
+<ul id="options"></ul>
+<button id="nextQuestion">Next Question</button>
+<p id="result"></p>
+
+<script>
+$(document).ready(function(){
+  var questions = [
+    {
+      question: "What is the capital of France?",
+      options: ["Paris", "London", "Berlin", "Madrid"],
+      answer: 0
+    },
+    {
+      question: "Which planet is known as the Red Planet?",
+      options: ["Mars", "Earth", "Venus", "Jupiter"],
+      answer: 0
+    }
+  ];
+  
+  var currentQuestion = 0;
+  
+  function displayQuestion() {
+    $("#question").text(questions[currentQuestion].question);
+    $("#options").empty();
+    $.each(questions[currentQuestion].options, function(index, option){
+      $("#options").append("<li>" + option + "</li>");
+    });
+  }
+  
+  $("#nextQuestion").click(function(){
+    currentQuestion++;
+    if (currentQuestion < questions.length) {
+      displayQuestion();
+      $("#result").text("");
+    } else {
+      $("#question").text("Quiz completed!");
+      $("#options").empty();
+      $("#result").text("Congratulations!");
+    }
+  });
+  
+  $("#options").on("click", "li", function(){
+    var selectedAnswer = $(this).index();
+    if (selectedAnswer === questions[currentQuestion].answer) {
+      $("#result").text("Correct!");
+    } else {
+      $("#result").text("Incorrect.");
+    }
+  });
+  
+  displayQuestion();
+});
+</script>
+
+</body>
+</html>

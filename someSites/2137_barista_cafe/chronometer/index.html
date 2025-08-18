@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  #chronometer {
+    font-size: 24px;
+  }
+</style>
+</head>
+<body>
+  <div id="chronometer">00:00:00</div>
+  <button onclick="startChronometer()">Start</button>
+  <button onclick="stopChronometer()">Stop</button>
+  <button onclick="resetChronometer()">Reset</button>
+
+  <script>
+    let startTime = 0;
+    let timerInterval;
+    
+    function updateChronometer() {
+      const currentTime = new Date().getTime() - startTime;
+      const hours = Math.floor(currentTime / 3600000);
+      const minutes = Math.floor((currentTime % 3600000) / 60000);
+      const seconds = Math.floor((currentTime % 60000) / 1000);
+      document.getElementById("chronometer").innerHTML = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    function startChronometer() {
+      if (!timerInterval) {
+        startTime = new Date().getTime() - (startTime > 0 ? startTime : 0);
+        timerInterval = setInterval(updateChronometer, 1000);
+      }
+    }
+
+    function stopChronometer() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+
+    function resetChronometer() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      startTime = 0;
+      document.getElementById("chronometer").innerHTML = "00:00:00";
+    }
+  </script>
+</body>
+</html>

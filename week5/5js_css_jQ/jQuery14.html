@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<body>
+
+<div id="slider"></div>
+<p>Value: <span id="sliderValue">0</span></p>
+
+<script>
+$(document).ready(function(){
+  $("#slider").slider({
+    min: 0,
+    max: 100,
+    value: 50,
+    slide: function(event, ui){
+      $("#sliderValue").text(ui.value);
+    }
+  });
+});
+</script>
+
+</body>
+</html>

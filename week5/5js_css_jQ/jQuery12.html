@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<form id="myForm">
+  <input type="text" id="name" placeholder="Name">
+  <button type="submit">Submit</button>
+</form>
+<div id="output"></div>
+
+<script>
+$(document).ready(function(){
+  $("#myForm").submit(function(event){
+    event.preventDefault();
+    var name = $("#name").val();
+    $("#output").text("Hello, " + name + "!");
+  });
+});
+</script>
+
+</body>
+</html>

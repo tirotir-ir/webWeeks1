@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .countdown {
+            font-size: 2em;
+            color: #333;
+        }
+
+        .countdown div {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Event Countdown</h1>
+    <div class="countdown">
+        <div id="days">0 Days</div>
+        <div id="hours">00 Hours</div>
+        <div id="minutes">00 Minutes</div>
+        <div id="seconds">00 Seconds</div>
+    </div>
+
+    <script>
+        // Set the event date
+        const eventDate = new Date("December 31, 2024 23:59:59").getTime();
+
+        // Update the countdown every second
+        const countdownInterval = setInterval(function () {
+
+            // Get current date and time
+            const now = new Date().getTime();
+
+            // Calculate the difference between now and the event date
+            const timeLeft = eventDate - now;
+
+            // Time calculations for days, hours, minutes, and seconds
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            // Display the result in the respective elements
+            document.getElementById("days").innerHTML = `${days} Days`;
+            document.getElementById("hours").innerHTML = `${hours.toString().padStart(2, '0')} Hours`;
+            document.getElementById("minutes").innerHTML = `${minutes.toString().padStart(2, '0')} Minutes`;
+            document.getElementById("seconds").innerHTML = `${seconds.toString().padStart(2, '0')} Seconds`;
+
+            // If the countdown is finished, clear the interval and show a message
+            if (timeLeft < 0) {
+                clearInterval(countdownInterval);
+                document.querySelector(".countdown").innerHTML = "Event has started!";
+            }
+
+        }, 1000);
+    </script>
+
+</body>
+
+</html>

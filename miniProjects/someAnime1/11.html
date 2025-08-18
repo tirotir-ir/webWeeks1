@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Text Typing Animation</title>
+  <style>
+    #typing {
+      font-size: 24px;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 3px solid black;
+    }
+  </style>
+</head>
+<body>
+  <div id="typing">Hello, this is a typing animation.</div>
+
+  <script>
+    const typing = document.getElementById('typing');
+    const text = typing.innerText;
+    let index = 0;
+
+    function typeText() {
+      typing.innerText = text.slice(0, index);
+      index++;
+      if (index <= text.length) {
+        setTimeout(typeText, 100);
+      }
+    }
+
+    typeText();
+  </script>
+</body>
+</html>

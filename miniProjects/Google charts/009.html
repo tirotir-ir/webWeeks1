@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- پیوند به کتابخانه Google Charts -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    // بارگیری کتابخانه Google Charts
+    google.charts.load('current', {'packages':['corechart']});
+    
+    // تعریف تابع برای رسم نمودار
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      // داده‌های محصولات و قیمت‌ها برای سال‌های مختلف
+      var data = google.visualization.arrayToDataTable([
+        ['محصول', 'سال 1399', 'سال 1400', 'سال 1401'],
+        ['محصول A', 1000, 1500, 2000],
+        ['محصول B', 800, 900, 1100],
+        ['محصول C', 1200, 1400, 1600],
+        // ادامه داده‌های محصولات دیگر
+      ]);
+
+      // تنظیمات نمودار مقایسه‌ای ستونی
+      var options = {
+        title: 'مقایسه قیمت محصولات در سال‌های مختلف',
+        vAxis: { title: 'قیمت' },
+        hAxis: { title: 'محصول' },
+        seriesType: 'bars',
+        series: { 0: { color: 'blue' }, 1: { color: 'green' }, 2: { color: 'red' } }
+      };
+
+      // ایجاد نمودار مقایسه‌ای ستونی
+      var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+
+      // نمایش نمودار
+      chart.draw(data, options);
+    }
+  </script>
+</head>
+<body>
+  <!-- المان برای نمایش نمودار -->
+  <div id="chart_div" style="width: 900px; height: 500px;"></div>
+</body>
+</html>

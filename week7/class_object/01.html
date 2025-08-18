@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Person Class Example</title>
+</head>
+<body>
+    <div id="output"></div>
+    <script>
+        // Class definition
+        class Person {
+          constructor(name, age) {
+            this.name = name;
+            this.age = age;
+          }
+
+          greet() {
+            const greeting = `Hello, my name is ${this.name} and I'm ${this.age} years old.`;
+            return greeting;
+          }
+        }
+
+        // Creating objects based on the class
+        let person1 = new Person("Alice", 25);
+        let person2 = new Person("Bob", 30);
+
+        // Calling the greet method on the objects
+        const greeting1 = person1.greet(); // Output: Hello, my name is Alice and I'm 25 years old.
+        const greeting2 = person2.greet(); // Output: Hello, my name is Bob and I'm 30 years old.
+
+        // Display the greetings in the HTML document
+        document.getElementById("output").innerHTML = `<p>${greeting1}</p><p>${greeting2}</p>`;
+    </script>
+</body>
+</html>

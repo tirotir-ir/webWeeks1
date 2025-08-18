@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>وبگو | تعریف و استفاده از فونت فارسی با قانون font-face در وب</title>
+<!-- Webgoo.ir -->
+<style>
+body {
+    font-family: Tahoma, Geneva, sans-serif;
+    direction: rtl;
+    font-size: 12px;
+}
+@font-face {
+    /* تعریف نام فونت */
+    font-family: 'BYekan';
+    /* اکسپلورر 9 به بعد */
+    src: url('/fonts/BYekanWeb.eot');
+    /* بارگذاری فایل فونت از سرور */
+    src: /* هک برای اکسپلورر 8 و ماقبل */
+         url('/fonts/BYekanWeb.eot') format('embedded-opentype'),
+         /* فرمت مناسب مرورگرهای تقریبا جدید */
+         url('/fonts/BYekanWeb.woff') format('woff'),
+         /* تمام مرورگرها به جزء اکسپلورر */
+         url('/fonts/BYekanWeb.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    font-display: swap;
+}
+.post-titr p {
+    font-family: BYekan, Tahoma, Geneva, sans-serif;
+    display: block;
+    font-size: 16px;    
+}
+</style>
+</head>
+<body>
+<div class="post-titr">
+<p>
+این نمونه متن فارسی، نحوه کاربرد قلم BYekan (اصلاح شده برای صفحات وب) را با استفاده از خاصیت font-face در CSS نسخه 3 نمایش می دهد.
+</p>
+</div>
+<hr>
+با افزودن src و local این امکان وجود دارد که ابتدا فونت مورد نظر در سیستم کاربر جستجو و در صورت عدم نصب از سرور بارگذاری شود، البته در این نمونه کد فایل صرفا از سرور بارگذاری می شود.
+</body>
+</html>

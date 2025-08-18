@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Picker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2em;
+        }
+
+        .color-box {
+            width: 200px;
+            height: 200px;
+            background-color: #fff;
+            margin-top: 20px;
+            border: 2px solid #333;
+        }
+
+        .hex-code {
+            font-size: 1.5em;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        input[type="color"] {
+            padding: 10px;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            background-color: #333;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Pick a Color</h1>
+
+    <div class="color-box" id="colorBox"></div>
+    <p class="hex-code" id="hexCode">#ffffff</p>
+    
+    <input type="color" id="colorPicker" value="#ffffff" onchange="changeColor()">
+
+    <script>
+        function changeColor() {
+            // Get the selected color from the input
+            const color = document.getElementById("colorPicker").value;
+
+            // Update the color box background color
+            document.getElementById("colorBox").style.backgroundColor = color;
+
+            // Display the hex code of the selected color
+            document.getElementById("hexCode").innerText = color;
+        }
+    </script>
+
+</body>
+</html>

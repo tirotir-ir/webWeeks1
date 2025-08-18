@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<p id="timer">10</p>
+<button id="startTimer">Start Timer</button>
+
+<script>
+$(document).ready(function(){
+  $("#startTimer").click(function(){
+    var count = 10;
+    $("#timer").text(count);
+    
+    var timer = setInterval(function(){
+      count--;
+      if (count >= 0) {
+        $("#timer").text(count);
+      } else {
+        clearInterval(timer);
+        alert("Time's up!");
+      }
+    }, 1000);
+  });
+});
+</script>
+
+</body>
+</html>

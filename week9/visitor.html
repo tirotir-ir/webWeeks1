@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitor Counter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .counter {
+            font-size: 2em;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Visitor Counter</h1>
+    <p>Your visit count:</p>
+    <div class="counter" id="visitCount">0</div>
+
+    <button onclick="resetCounter()">Reset Counter</button>
+
+    <script>
+        // Get the stored count from localStorage
+        let visitCount = localStorage.getItem('visitCount');
+
+        // If it's the user's first visit (visitCount is null), set the count to 0
+        if (!visitCount) {
+            visitCount = 0;
+        } else {
+            visitCount = parseInt(visitCount); // Convert stored value to a number
+        }
+
+        // Increment the visit count
+        visitCount++;
+
+        // Display the updated visit count
+        document.getElementById('visitCount').innerText = visitCount;
+
+        // Save the updated count back to localStorage
+        localStorage.setItem('visitCount', visitCount);
+
+        // Reset counter function
+        function resetCounter() {
+            localStorage.setItem('visitCount', 0);
+            document.getElementById('visitCount').innerText = 0;
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  .scrolling-container {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .scrolling-text {
+    display: inline-block;
+    animation: fade 10s linear infinite;
+  }
+
+  @keyframes fade {
+    0%, 100% {
+      opacity: 0;
+      transform: translateX(0);
+    }
+    25%, 75% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    50% {
+      opacity: 1;
+      transform: translateX(-100%);
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="scrolling-container">
+  <div class="scrolling-text">
+    This is a fade-in and fade-out scrolling effect using HTML and CSS.
+  </div>
+</div>
+
+</body>
+</html>

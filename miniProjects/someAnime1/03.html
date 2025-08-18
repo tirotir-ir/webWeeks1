@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GSAP Animation Test</title>
+  <!-- Include the GSAP library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+</head>
+<body>
+  <!-- The element to animate -->
+  <div id="circle" style="width: 30px; height: 50px; background-color: red;"></div>
+  
+  <script>
+// HTML: <div id="circle"></div>
+gsap.to("#circle", { duration: 1, x: 200, ease: "bounce", delay: 1 });
+  </script>
+</body>
+</html>

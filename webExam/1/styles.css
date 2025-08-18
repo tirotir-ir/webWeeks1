@@ -1,0 +1,28 @@
+body {
+    font-family: Arial, sans-serif;
+}
+h1 {
+    color: blue;
+    text-align: center;
+}
+p {
+    font-size: 18px;
+    color: green;
+}
+a {
+    text-decoration: none;
+    color: red;
+}
+.container {
+    border: 1px solid black;
+    padding: 10px;
+}
+.container h2 {
+    color: purple;
+}
+.container ul {
+    list-style-type: square;
+}
+.container li {
+    color: brown;
+}

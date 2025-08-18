@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<ul id="myList">
+  <li>Item 1</li>
+  <li>Item 2</li>
+  <li>Item 3</li>
+</ul>
+<button id="addItem">Add Item</button>
+
+<script>
+$(document).ready(function(){
+  $("#addItem").click(function(){
+    var newItem = $("<li>").text("New Item");
+    $("#myList").append(newItem);
+  });
+});
+</script>
+
+</body>
+</html>

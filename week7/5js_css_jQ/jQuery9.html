@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<button id="myButton">Fade</button>
+<div id="myDiv" style="width: 100px; height: 100px; background-color: blue;"></div>
+
+<script>
+$(document).ready(function(){
+  $("#myButton").click(function(){
+    $("#myDiv").fadeOut(1000); // Fade out with animation
+  });
+});
+</script>
+
+</body>
+</html>

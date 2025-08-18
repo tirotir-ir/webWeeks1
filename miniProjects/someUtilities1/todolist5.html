@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive To-Do List</title>
+    <style>
+        /* ... (existing styles) ... */
+    </style>
+    <script>
+        /* ... (existing functions) ... */
+
+        function saveTasksToFile() {
+            var taskList = document.getElementById("taskList").innerHTML;
+            var blob = new Blob([taskList], { type: "text/plain" });
+            var url = URL.createObjectURL(blob);
+
+            var a = document.createElement("a");
+            a.href = url;
+            a.download = "todolist.txt";
+            a.click();
+
+            // Clean up the object URL
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</head>
+<body>
+    <h1>Interactive To-Do List</h1>
+    <div id="todo-container">
+        <input type="text" id="taskInput" placeholder="Enter a task" onkeypress="handleKeyPress(event)">
+        <button onclick="addTask()">Add Task</button>
+        <button onclick="saveTasksToFile()">Save as Text File</button>
+        <ul id="taskList">
+            <!-- Tasks will be added dynamically here -->
+        </ul>
+    </div>
+</body>
+</html>

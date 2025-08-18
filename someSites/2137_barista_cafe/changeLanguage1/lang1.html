@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Language Selection</title>
+</head>
+<body>
+
+<select id="languageSelect" onchange="changeLanguage()">
+    <option value="en">English</option>
+    <option value="es">Spanish</option>
+    <option value="fr">French</option>
+    <!-- Add more language options as needed -->
+</select>
+
+<div id="content">
+    <p id="greeting">Hello!</p>
+</div>
+
+<script>
+    function changeLanguage() {
+        var selectedLanguage = document.getElementById("languageSelect").value;
+        document.documentElement.lang = selectedLanguage;
+        
+        // Update content based on selected language
+        var greeting = document.getElementById("greeting");
+        if (selectedLanguage === "en") {
+            greeting.textContent = "Hello!";
+        } else if (selectedLanguage === "es") {
+            greeting.textContent = "¡Hola!";
+        } else if (selectedLanguage === "fr") {
+            greeting.textContent = "Bonjour!";
+        }
+    }
+</script>
+
+</body>
+</html>

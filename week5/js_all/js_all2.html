@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>نمونه‌های جاوااسکریپت</title>
+</head>
+<body>
+    <h1>نمونه‌های جاوااسکریپت</h1>
+
+    <!-- درس 1: سلام دنیا -->
+    <h2>درس 1: سلام دنیا</h2>
+    <p>ما با یک مثال ساده "سلام، دنیا!" در جاوااسکریپت شروع می‌کنیم:</p>
+    <pre id="helloWorld"></pre>
+
+    <script>
+        // درس 1: سلام دنیا
+        let helloMessage = "سلام، دنیا!";
+        document.getElementById('helloWorld').textContent = helloMessage;
+    </script>
+
+    <!-- درس 2: متغیرها -->
+    <h2>درس 2: متغیرها</h2>
+    <p>جاوااسکریپت به شما امکان تعریف متغیرها می‌دهد. به عنوان مثال:</p>
+    <pre id="variables"></pre>
+
+    <script>
+        // درس 2: متغیرها
+        let x = 10;
+        document.getElementById('variables').textContent = "مقدار x برابر است با: " + x;
+    </script>
+
+    <!-- درس 3: عبارات شرطی -->
+    <h2>درس 3: عبارات شرطی</h2>
+    <p>شما می‌توانید از عبارات شرطی برای انتخاب‌های شرطی در کد خود استفاده کنید:</p>
+    <pre id="conditionalStatements"></pre>
+
+    <script>
+        // درس 3: عبارات شرطی
+        let conditionalMessage;
+        if (x > 5) {
+            conditionalMessage = "x بزرگتر از 5 است.";
+        } else {
+            conditionalMessage = "x بزرگتر از 5 نیست.";
+        }
+        document.getElementById('conditionalStatements').textContent = conditionalMessage;
+    </script>
+
+    <!-- درس 4: حلقه‌ها -->
+    <h2>درس 4: حلقه‌ها</h2>
+    <p>حلقه‌ها به شما امکان تکرار عملیات در کد می‌دهند. به عنوان مثال، حلقه for:</p>
+    <pre id="loops"></pre>
+
+    <script>
+        // درس 4: حلقه‌ها
+        let loopOutput = "";
+        for (let i = 0; i < 5; i++) {
+            loopOutput += "تکرار " + i + "\n";
+        }
+        document.getElementById('loops').textContent = loopOutput;
+    </script>
+
+    <!-- درس 5: توابع -->
+    <h2>درس 5: توابع</h2>
+    <p>توابع بلوک‌های کد قابل استفاده مجدد هستند. به عنوان مثال:</p>
+    <pre id="functions"></pre>
+
+    <script>
+        // درس 5: توابع
+        function add(a, b) {
+            return a + b;
+        }
+
+        let result = add(5, 3);
+        document.getElementById('functions').textContent = "نتیجه تابع add(5, 3) برابر است با: " + result;
+    </script>
+
+    <!-- درس 6: آرایه‌ها/لیست‌ها -->
+    <h2>درس 6: آرایه‌ها/لیست‌ها</h2>
+    <p>شما می‌توانید از آرایه‌ها برای ذخیره مجموعه‌های داده استفاده کنید:</p>
+    <pre id="arrays"></pre>
+
+    <script>
+        // درس 6: آرایه‌ها/لیست‌ها
+        let myArray = [1, 2, 3, 4, 5];
+        document.getElementById('arrays').textContent = "آرایه‌ی من شامل موارد زیر است: " + myArray.join(', ');
+    </script>
+
+    <!-- درس 9: مدیریت خطا -->
+    <h2>درس 9: مدیریت خطا</h2>
+    <p>مدیریت خطا به شما کمک می‌کند با مشکلات غیرمنتظره در کد خود مقابله کنید:</p>
+    <pre id="errorHandling"></pre>
+
+    <script>
+        // درس 9: مدیریت خطا
+        try {
+            let result2 = 10 / 0;
+        } catch (error) {
+            document.getElementById('errorHandling').textContent = "خطا: " + error.message;
+        }
+    </script>
+
+</body>
+</html>

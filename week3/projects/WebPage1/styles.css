@@ -1,0 +1,50 @@
+/* styles.css */
+
+/* Reset some default margin and padding */
+body, h1, h2, h3, p, ul, li, blockquote {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+}
+
+header {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 1em;
+}
+
+nav {
+  background-color: #444;
+  color: white;
+  padding: 0.5em;
+}
+
+nav a {
+  text-decoration: none;
+  color: white;
+  margin-right: 1em;
+}
+
+main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2em;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+section {
+  margin-bottom: 1em;
+}
+
+footer {
+  text-align: center;
+  padding: 1em;
+  background-color: #333;
+  color: white;
+}

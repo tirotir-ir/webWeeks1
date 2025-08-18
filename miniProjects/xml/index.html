@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Address Book</title>
+</head>
+<body>
+  <h1>Address Book</h1>
+  <div id="addressList"></div>
+
+  <script>
+    // Function to load and display XML data
+    function loadXML() {
+      const xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+          displayData(this.responseXML);
+        }
+      };
+      xmlhttp.open("GET", "address_book.xml", true);
+      xmlhttp.send();
+    }
+
+    // Function to display XML data in HTML
+    function displayData(xml) {
+      const addressList = document.getElementById("addressList");
+      const entries = xml.getElementsByTagName("entry");
+
+      for (let i = 0; i < entries.length; i++) {
+        const name = entries[i].getElementsByTagName("name")[0].childNodes[0].nodeValue;
+        const email = entries[i].getElementsByTagName("email")[0].childNodes[0].nodeValue;
+        const phone = entries[i].getElementsByTagName("phone")[0].childNodes[0].nodeValue;
+
+        const entryDiv = document.createElement("div");
+        entryDiv.innerHTML = `
+          <h3>${name}</h3>
+          <p>Email: ${email}</p>
+          <p>Phone: ${phone}</p>
+        `;
+        addressList.appendChild(entryDiv);
+      }
+    }
+
+    // Load and display XML data when the page loads
+    window.onload = loadXML;
+  </script>
+</body>
+</html>

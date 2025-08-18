@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Atom Feed Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Website with Atom Feed</h1>
+    <div id="atom-feed"></div>
+    
+    <script>
+        $(document).ready(function() {
+            $.get("https://example.com/atom-feed.xml", function(data) {
+                $("#atom-feed").html(data);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<body>
+
+<h3>Click me to toggle content</h3>
+<div id="accordion">
+  <h3>Section 1</h3>
+  <div>
+    <p>Content for section 1.</p>
+  </div>
+  <h3>Section 2</h3>
+  <div>
+    <p>Content for section 2.</p>
+  </div>
+</div>
+
+<script>
+$(document).ready(function(){
+  $("#accordion").accordion();
+});
+</script>
+
+</body>
+</html>

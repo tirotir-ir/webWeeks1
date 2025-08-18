@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        #todo-container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 8px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 6px 10px;
+            cursor: pointer;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+        }
+        .completed-task {
+            text-decoration: line-through;
+            color: #888;
+        }
+    </style>
+    <script>
+        function addTask() {
+            var taskText = document.getElementById("taskInput").value;
+            if (taskText.trim() !== "") {
+                var taskList = document.getElementById("taskList");
+                var li = document.createElement("li");
+                li.innerHTML = `
+                    <input type="checkbox" onchange="toggleTaskCompletion(this)">
+                    <span>${taskText}</span>
+                    <button class="delete-btn" onclick="removeTask(this)">Delete</button>
+                `;
+                taskList.appendChild(li);
+                document.getElementById("taskInput").value = "";
+            }
+        }
+
+        function removeTask(button) {
+            var li = button.parentElement;
+            li.parentElement.removeChild(li);
+        }
+
+        function toggleTaskCompletion(checkbox) {
+            var taskSpan = checkbox.nextElementSibling;
+            if (checkbox.checked) {
+                taskSpan.classList.add("completed-task");
+            } else {
+                taskSpan.classList.remove("completed-task");
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Interactive To-Do List</h1>
+    <div id="todo-container">
+        <input type="text" id="taskInput" placeholder="Enter a task">
+        <button onclick="addTask()">Add Task</button>
+        <ul id="taskList">
+            <!-- Tasks will be added dynamically here -->
+        </ul>
+    </div>
+</body>
+</html>

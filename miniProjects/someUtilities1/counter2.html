@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page Counter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        #counter {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        // Initialize the page counter variable
+        var pageCounter = 0;
+
+        // Function to increment and display the page counter
+        function incrementCounter() {
+            pageCounter++;
+            document.getElementById("counter").innerHTML = "Page views: " + pageCounter;
+        }
+    </script>
+</head>
+<body>
+    <h1>Simple Page Counter</h1>
+    <p id="counter">Page views: 0</p>
+    <button onclick="incrementCounter()">Increment Counter</button>
+</body>
+</html>

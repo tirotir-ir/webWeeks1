@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Read CSV with HTML</title>
+    <script>
+        function readCSV(file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const text = event.target.result;
+                displayCSV(text);
+            };
+            reader.readAsText(file);
+        }
+
+        function displayCSV(text) {
+            const rows = text.split('\n');
+            let table = '<table border="1">';
+            rows.forEach(row => {
+                const cells = row.split(',');
+                table += '<tr>';
+                cells.forEach(cell => {
+                    table += `<td>${cell}</td>`;
+                });
+                table += '</tr>';
+            });
+            table += '</table>';
+            document.getElementById('output').innerHTML = table;
+        }
+    </script>
+</head>
+<body>
+    <h1>Read CSV with HTML</h1>
+    <input type="file" accept=".csv" onchange="readCSV(this.files[0])">
+    <div id="output"></div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Rain</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            height: 100vh;
+            background-color: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+        }
+        .emoji {
+            position: absolute;
+            top: -50px;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<script>
+    const emojis = ['😀', '🎉', '💖', '🌟', '🚀', '🍀', '✨'];
+
+    function createEmoji() {
+        const emoji = document.createElement('div');
+        emoji.classList.add('emoji');
+        emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+        emoji.style.left = `${Math.random() * 100}vw`;
+        emoji.style.fontSize = `${Math.random() * 3 + 1}em`;
+        emoji.style.animationDuration = `${Math.random() * 3 + 2}s`;
+        document.body.appendChild(emoji);
+        setTimeout(() => {
+            emoji.remove();
+        }, 5000);
+    }
+
+    setInterval(createEmoji, 300);
+</script>
+
+</body>
+</html>

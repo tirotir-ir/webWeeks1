@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Comment Box</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        #commentBox {
+            width: 80%;
+            height: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Write a Comment</h1>
+    <textarea id="commentBox" placeholder="Write your comment here"></textarea>
+    <br>
+    <button onclick="saveComment()">Save as Text File</button>
+
+    <script>
+        function saveComment() {
+            var comment = document.getElementById("commentBox").value;
+            var blob = new Blob([comment], { type: "text/plain" });
+            var url = URL.createObjectURL(blob);
+
+            var a = document.createElement("a");
+            a.href = url;
+            a.download = "comment.txt";
+            a.click();
+
+            // Clean up the object URL
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>

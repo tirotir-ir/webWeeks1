@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theme Switcher</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Light Theme (Default) */
+        body.light {
+            background-color: #0e900c;
+            color: #333;
+        }
+
+        /* Dark Theme */
+        body.dark {
+            background-color: #7826db;
+            color: #f0f0f0;
+        }
+
+        .theme-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            background-color: #444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .theme-switcher:hover {
+            background-color: #666;
+        }
+    </style>
+</head>
+
+<body class="light">
+    <h1>Welcome to My Website!</h1>
+    <p>Click the button to switch between light and dark themes.</p>
+
+    <!-- Theme Switcher Button -->
+    <button class="theme-switcher" onclick="toggleTheme()">Switch Theme</button>
+
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+
+            // Toggle between 'light' and 'dark' class
+            body.classList.toggle('dark');
+
+            // Change button text based on the theme
+            const button = document.querySelector('.theme-switcher');
+            if (body.classList.contains('dark')) {
+                button.innerText = 'Switch to Light Theme';
+            } else {
+                button.innerText = 'Switch to Dark Theme';
+            }
+        }
+    </script>
+</body>
+
+</html>

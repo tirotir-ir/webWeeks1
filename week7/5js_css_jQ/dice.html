@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<p>Roll the dice: <span id="diceValue"></span></p>
+<button id="rollDice">Roll</button>
+
+<script>
+$(document).ready(function(){
+  $("#rollDice").click(function(){
+    var value = Math.floor(Math.random() * 6) + 1;
+    $("#diceValue").text(value);
+  });
+});
+</script>
+
+</body>
+</html>

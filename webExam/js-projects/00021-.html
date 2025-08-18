@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weight Converter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f8ff;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      color: #4CAF50;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    input[type="number"] {
+      padding: 10px;
+      font-size: 1rem;
+      border: 2px solid #4CAF50;
+      border-radius: 5px;
+      width: 200px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      color: white;
+      background-color: #4CAF50;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    button:active {
+      background-color: #3e8e41;
+    }
+
+    #grams {
+      font-size: 1.2rem;
+      margin-top: 20px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>Weight Converter</h1>
+  <input type="number" id="kg" placeholder="Weight in kg">
+  <button onclick="convertToGrams()">Convert to Grams</button>
+  <p id="grams">Weight in grams: </p>
+
+  <script>
+    function convertToGrams() {
+      const kg = parseFloat(document.getElementById('kg').value);
+      const grams = kg * 1000;
+      document.getElementById('grams').innerText = `Weight in grams: ${grams}`;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<input type="text" id="myInput" placeholder="Type here">
+
+<script>
+$(document).ready(function(){
+  $("#myInput").keyup(function(){
+    var text = $(this).val();
+    $("#output").text(text);
+  });
+});
+</script>
+
+<div id="output"></div>
+
+</body>
+</html>

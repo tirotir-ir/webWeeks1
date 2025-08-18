@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<button id="increment">Increment</button>
+<p>Value: <span id="value">0</span></p>
+
+<script>
+$(document).ready(function(){
+  var currentValue = 0;
+  $("#increment").click(function(){
+    currentValue++;
+    $("#value").text(currentValue);
+  });
+});
+</script>
+
+</body>
+</html>

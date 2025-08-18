@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* @import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap"); */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+}
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #232427;
+}
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    padding: 100px 0 50px;
+}
+.card {
+    position: relative;
+    min-width: 320px;
+    height: 500px;
+    box-shadow: inset 5px 5px 5px rgba(0, 0, 0, 0.2), inset -5px -5px 15px rgba(255, 255, 255, 0.1),
+        5px 5px 15px rgba(0, 0, 0, 0.3), -5px -5px 15px rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    margin: 30px;
+}
+.card .box {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    background: #2a2b2f;
+    border-radius: 15px;
+    border: 2px solid #1e1f23;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.4s, box-shadow 0.4s;
+}
+.card:hover .box {
+    transform: translateY(-50px);
+    box-shadow: 0 40px 70px rgba(0, 0, 0, 0.5);
+}
+.content {
+    padding: 20px;
+    text-align: center;
+}
+.icon {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    background: #f00;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+.icon .fa {
+    color: #fff;
+    font-size: 2em;
+}
+.content h3 {
+    font-size: 1.8em;
+    color: #fff;
+    font-weight: 300;
+}
+.content h4 {
+    color: #fff;
+    font-size: 3em;
+    font-weight: 700;
+}
+.content h4 sup {
+    font-size: 0.75em;
+    font-weight: 300;
+}
+.content ul {
+    position: relative;
+}
+.content ul li {
+    list-style: none;
+    color: #fff;
+    margin: 5px 0;
+}
+.fa-check {
+    color: #0f0;
+    margin-right: 10px;
+}
+.fa-times {
+    color: #f00;
+    margin-right: 10px;
+}
+.content a {
+    position: relative;
+    display: inline-block;
+    padding: 8px 20px;
+    background: #f00;
+    margin-top: 15px;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 400;
+}
+.card:nth-child(1) .content a,
+.card:nth-child(1) .content .icon {
+    background: #2196f3;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+.card:nth-child(2) .content a,
+.card:nth-child(2) .content .icon {
+    background: #e91e63;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+.card:nth-child(3) .content a,
+.card:nth-child(3) .content .icon {
+    background: #97dc47;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+.toggle {
+    position: absolute;
+    top: 20px;
+    left: calc(50% - 30px);
+    width: 60px;
+    height: 60px;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.toggle::before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 700;
+    font-size: 24px;
+    content: "\f185";
+}
+body.light .toggle {
+    background: #232427;
+    color: #fff;
+}
+body.light .toggle::before {
+    content: "\f186";
+}
+body.light {
+    background: #ebf5fc;
+}
+body.light .container .card {
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.03),
+    inset -10px -10px 15px rgba(255, 255, 255, 0.5),
+    10px 10px 10px rgba(0, 0, 0, 0.03),
+    -10px -10px 15px rgba(255, 255, 255, 0.5);
+}
+body.light .container .card .box {
+    background: #ebf5fc;
+    border: none;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+body.light .container .card:hover .box {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+body.light .container .card .box .content h3,
+body.light .container .card .box .content h4,
+body.light .container .card .box .content ul li {
+    color: #32a3b1;
+}
+    </style>
+    <title>Responsive Pricing Table</title>
+</head>
+<body>
+    <div class="toggle"></div>
+    <div class="container">
+        <div class="card">
+            <div class="box">
+                <div class="content">
+                    <div class="icon"><i class="fa fa-paper-plane" aria-hidden="true"></i></div>
+                    <h3>Basic</h3>
+                    <h4><sup>$</sup>25</h4>
+                    <ul>
+                        <li><i class="fa fa-check" aria-hidden="true"></i>10 GB Space</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i>3 Domain Name</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i>10 Email Address</li>
+                        <li><i class="fa fa-times" aria-hidden="true"></i>Live Support</li>
+                    </ul>
+                    <a href="#">Order Now</a>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="box">
+                <div class="content">
+                    <div class="icon"><i class="fa fa-plane" aria-hidden="true"></i></div>
+                    <h3>Standard</h3>
+                    <h4><sup>$</sup>50</h4>
+                    <ul>
+                        <li><i class="fa fa-check" aria-hidden="true"></i>10 GB Space</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i>3 Domain Name</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i>10 Email Address</li>
+                        <li><i class="fa fa-times" aria-hidden="true"></i>Live Support</li>
+                    </ul>
+                    <a href="#">Order Now</a>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="box">
+                <div class="content">
+                    <div class="icon"><i class="fa fa-rocket" aria-hidden="true"></i></div>
+                    <h3>Premium</h3>
+                    <h4><sup>$</sup>25</h4>
+                    <ul>
+                        <li><i class="fa fa-check" aria-hidden="true"></i>10 GB Space</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i>3 Domain Name</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i>10 Email Address</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i>Live Support</li>
+                    </ul>
+                    <a href="#">Order Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <script src="script.js"></script> -->
+    <script>
+        const body = document.querySelector('body');
+const toggle = document.querySelector('.toggle');
+
+toggle.addEventListener('click', () => {
+    body.classList.toggle('light');
+});
+    </script>
+</body>
+</html>

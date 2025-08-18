@@ -1,0 +1,24 @@
+
+<!-- ۲۱. دریافت وزن به کیلوگرم و نمایش به گرم: -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weight Converter</title>
+</head>
+<body>
+  <h1>Weight Converter</h1>
+  <input type="number" id="kg" placeholder="Weight in kg">
+  <button onclick="convertToGrams()">Convert to Grams</button>
+  <p id="grams">Weight in grams: </p>
+
+  <script>
+    function convertToGrams() {
+      const kg = parseFloat(document.getElementById('kg').value);
+      const grams = kg * 1000;
+      document.getElementById('grams').innerText = `Weight in grams: ${grams}`;
+    }
+  </script>
+</body>
+</html>

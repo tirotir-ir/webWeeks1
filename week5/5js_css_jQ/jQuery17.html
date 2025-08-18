@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<ul id="userList"></ul>
+
+<script>
+$(document).ready(function(){
+  $.getJSON("https://jsonplaceholder.typicode.com/users", function(users){
+    $.each(users, function(index, user){
+      $("#userList").append("<li>" + user.name + "</li>");
+    });
+  });
+});
+</script>
+
+</body>
+</html>

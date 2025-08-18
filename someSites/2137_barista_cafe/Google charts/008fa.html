@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- پیوند به کتابخانه Google Charts -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    // بارگیری کتابخانه Google Charts
+    google.charts.load('current', {'packages':['corechart']});
+    
+    // تعریف تابع برای رسم نمودار
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      // گرفتن داده‌های ورودی کاربر
+      var inputData = document.getElementById('data').value.trim();
+
+      // جداسازی داده‌ها و تجزیه و تحلیل آنها
+      var rows = inputData.split('\n');
+      var chartData = [['برچسب', 'مقدار']];
+
+      for (var i = 0; i < rows.length; i++) {
+        var parts = rows[i].split(',');
+        if (parts.length === 2) {
+          var label = parts[0].trim();
+          var value = parseFloat(parts[1].trim());
+
+          if (!isNaN(value)) {
+            chartData.push([label, value]);
+          }
+        }
+      }
+
+      // ایجاد جدول داده از داده‌های پردازش شده
+      var data = google.visualization.arrayToDataTable(chartData);
+
+      var options = {
+        title: 'نمودار داده‌های ورودی کاربر',
+        legend: { position: 'none' }
+      };
+
+      var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+    }
+  </script>
+</head>
+<body>
+  <!-- المان فرم برای ورود داده‌ها -->
+  <form id="data-form">
+    <label for="data">داده‌ها (فرمت: برچسب, مقدار روی خطوط جداگانه)</label>
+    <textarea id="data" name="data" rows="4" cols="50" required></textarea>
+    <button type="button" onclick="drawChart()">رسم نمودار</button>
+  </form>
+
+  <!-- المان برای نمایش نمودار -->
+  <div id="chart_div" style="width: 900px; height: 500px;"></div>
+</body>
+</html>

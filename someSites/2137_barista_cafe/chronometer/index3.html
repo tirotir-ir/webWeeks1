@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Styled HTML with Chronometer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin: 20px 0;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #chronometer {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        #timeInput {
+            width: 100px;
+            padding: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Website</h1>
+    </header>
+    <div class="container">
+        <p>This is a sample paragraph of text.</p>
+        <div>
+            <label for="timeInput">Desired Time (seconds):</label>
+            <input type="number" id="timeInput" min="0" step="1" value="0">
+        </div>
+        <button id="startButton" onclick="startChronometer()">Start</button>
+        <button id="stopButton" onclick="stopChronometer()">Stop</button>
+        <button id="resetButton" onclick="resetChronometer()">Reset</button>
+        <div id="chronometer">00:00:00</div>
+    </div>
+
+    <script>
+        let startTime = 0;
+        let timerInterval;
+        let isRunning = false;
+        let desiredTime = 0;
+
+        function updateChronometer() {
+            if (isRunning) {
+                const currentTime = Math.floor((Date.now() - startTime) / 1000);
+                const totalSeconds = currentTime;
+                const hours = Math.floor(totalSeconds / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+                document.getElementById("chronometer").innerHTML = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                if (totalSeconds >= desiredTime) {
+                    showTimeReachedAlert();
+                    stopChronometer();
+                }
+            }
+        }
+
+        function showTimeReachedAlert() {
+            alert(`Desired time of ${desiredTime} seconds reached!`);
+        }
+
+        function startChronometer() {
+            if (!isRunning) {
+                isRunning = true;
+                desiredTime = parseInt(document.getElementById("timeInput").value);
+                startTime = Date.now();
+                timerInterval = setInterval(updateChronometer, 1000);
+                document.getElementById("startButton").disabled = true;
+                document.getElementById("stopButton").disabled = false;
+                document.getElementById("resetButton").disabled = false;
+                document.getElementById("timeInput").disabled = true;
+            }
+        }
+
+        function stopChronometer() {
+            if (isRunning) {
+                isRunning = false;
+                clearInterval(timerInterval);
+                document.getElementById("startButton").disabled = false;
+                document.getElementById("stopButton").disabled = true;
+                document.getElementById("resetButton").disabled = false;
+                document.getElementById("timeInput").disabled = false;
+            }
+        }
+
+        function resetChronometer() {
+            isRunning = false;
+            clearInterval(timerInterval);
+            startTime = 0;
+            desiredTime = 0;
+            document.getElementById("timeInput").value = "0";
+            document.getElementById("chronometer").innerHTML = "00:00:00";
+            document.getElementById("startButton").disabled = false;
+            document.getElementById("stopButton").disabled = true;
+            document.getElementById("resetButton").disabled = true;
+            document.getElementById("timeInput").disabled = false;
+        }
+    </script>
+</body>
+</html>

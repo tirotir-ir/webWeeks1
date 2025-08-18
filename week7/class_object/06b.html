@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Class Example</title>
+</head>
+<body>
+    <div id="output"></div>
+    <script>
+        // Class definition for Student
+        class Student {
+          constructor(name, age) {
+            this.name = name;
+            this.age = age;
+            this.favoriteSubjects = [];
+          }
+
+          addFavoriteSubject(subject) {
+            this.favoriteSubjects.push(subject);
+          }
+
+          removeFavoriteSubject(subject) {
+            const index = this.favoriteSubjects.indexOf(subject);
+            if (index !== -1) {
+              this.favoriteSubjects.splice(index, 1);
+              console.log(`${subject} removed from ${this.name}'s favorite subjects.`);
+            } else {
+              console.log(`${this.name} doesn't have ${subject} as a favorite subject.`);
+            }
+          }
+
+          hasFavoriteSubject(subject) {
+            return this.favoriteSubjects.includes(subject);
+          }
+
+          displayInfo() {
+            return `Name: ${this.name}, Age: ${this.age}, Favorite Subjects: ${this.favoriteSubjects.join(", ")}`;
+          }
+        }
+
+        // Creating objects based on the Student class
+        let student1 = new Student("Alice", 18);
+        let student2 = new Student("Bob", 20);
+
+        // Using the objects
+        student1.addFavoriteSubject("Math");
+        student1.addFavoriteSubject("History");
+        student2.addFavoriteSubject("Physics");
+
+        const student1Info = student1.displayInfo();
+        const student2Info = student2.displayInfo();
+
+        // Check if students have specific subjects as favorites
+        const student1HasMath = student1.hasFavoriteSubject("Math");
+        const student2HasBiology = student2.hasFavoriteSubject("Biology");
+
+        // Remove a favorite subject for student1
+        student1.removeFavoriteSubject("Math");
+
+        // Display the student information and results in the HTML document
+        const outputDiv = document.getElementById("output");
+        outputDiv.innerHTML = `
+            <p>${student1Info}</p>
+            <p>${student2Info}</p>
+            <p>Does student1 have Math as a favorite subject? ${student1HasMath}</p>
+            <p>Does student2 have Biology as a favorite subject? ${student2HasBiology}</p>
+        `;
+    </script>
+</body>
+</html>

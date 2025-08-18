@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mortgage Calculator</title>
+    <style>
+       <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+    }
+    h1 {
+        text-align: center;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    input, button {
+        padding: 5px;
+        margin-bottom: 10px;
+    }
+    #result {
+        font-weight: bold;
+    }
+</style>
+
+    </style>
+</head>
+<body>
+    <h1>Mortgage Calculator</h1>
+    <label for="loanAmount">Loan Amount:</label>
+    <input type="number" id="loanAmount">
+    <label for="interestRate">Interest Rate (%):</label>
+    <input type="number" id="interestRate">
+    <label for="loanTerm">Loan Term (years):</label>
+    <input type="number" id="loanTerm">
+    <button id="calculateButton">Calculate</button>
+    <p id="result"></p>
+
+    <script>
+        document.getElementById("calculateButton").addEventListener("click", function () {
+            const loanAmount = parseFloat(document.getElementById("loanAmount").value);
+            const interestRate = parseFloat(document.getElementById("interestRate").value) / 100;
+            const loanTermYears = parseFloat(document.getElementById("loanTerm").value);
+            const loanTermMonths = loanTermYears * 12;
+
+            const monthlyInterestRate = interestRate / 12;
+            const monthlyPayment = (loanAmount * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -loanTermMonths));
+
+            document.getElementById("result").innerText = `Monthly Payment: $${monthlyPayment.toFixed(2)}`;
+        });
+    </script>
+</body>
+</html>

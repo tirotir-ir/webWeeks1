@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XML Data Example</title>
+</head>
+<body>
+    <h2>XML Data Example</h2>
+    <div id="xml-data"></div>
+
+    <script>
+        const xmlData = `
+            <users>
+                <user>
+                    <name>John Doe</name>
+                    <email>johndoe@example.com</email>
+                </user>
+                <user>
+                    <name>Jane Smith</name>
+                    <email>janesmith@example.com</email>
+                </user>
+            </users>
+        `;
+
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlData, "text/xml");
+
+        let output = "<ul>";
+        const users = xmlDoc.getElementsByTagName("user");
+        for (let i = 0; i < users.length; i++) {
+            const name = users[i].getElementsByTagName("name")[0].textContent;
+            const email = users[i].getElementsByTagName("email")[0].textContent;
+            output += `<li>Name: ${name}, Email: ${email}</li>`;
+        }
+        output += "</ul>";
+
+        document.getElementById("xml-data").innerHTML = output;
+    </script>
+</body>
+</html>

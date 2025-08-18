@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ATM Finder</title>
+    <style>
+        /* Add your CSS styling here */
+    </style>
+</head>
+<body>
+    <h1>ATM Finder</h1>
+    <button id="findButton">Find Nearest ATM</button>
+    <div id="atmList"></div>
+
+    <script>
+        document.getElementById("findButton").addEventListener("click", function () {
+            // Replace the following code with logic to retrieve ATM locations
+            const atms = [
+                { name: "ATM 1", location: "123 Main St, City, ZIP" },
+                { name: "ATM 2", location: "456 Downtown Ave, City, ZIP" }
+                // Add more ATM locations as needed
+            ];
+
+            const atmListDiv = document.getElementById("atmList");
+            atmListDiv.innerHTML = "<h2>ATM Locations:</h2>";
+
+            for (const atm of atms) {
+                const atmInfo = `<p><strong>${atm.name}:</strong> ${atm.location}</p>`;
+                atmListDiv.innerHTML += atmInfo;
+            }
+        });
+    </script>
+</body>
+</html>

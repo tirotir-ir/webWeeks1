@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GSAP Animation Test</title>
+  <!-- Include the GSAP library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+</head>
+<body>
+  <!-- The element to animate -->
+  <div id="box1" style="width: 30px; height: 50px; background-color: red;"></div>
+  <div id="box2" style="width: 50px; height: 50px; background-color: blue;"></div>
+
+  <script>
+// HTML: <div id="box1"></div> <div id="box2"></div>
+const tl = gsap.timeline();
+tl.to("#box1", { duration: 1, x: 200 })
+  .to("#box2", { duration: 1, y: 150 }, "-=0.5"); // -0.5s overlap
+
+  </script>
+</body>
+</html>

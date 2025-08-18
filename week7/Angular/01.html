@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>AngularJS Sample</title>
+    <!-- اضافه کردن کتابخانه AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+
+<!-- تعریف ماژول -->
+<script>
+    var app = angular.module('myApp', []);
+
+    // تعریف یک کنترلر
+    app.controller('myController', function ($scope) {
+        $scope.message = 'سلام، من یک متن از کنترلر هستم!';
+    });
+
+    // تعریف یک فیلتر
+    app.filter('reverse', function () {
+        return function (input) {
+            return input.split('').reverse().join('');
+        };
+    });
+</script>
+
+<div ng-controller="myController">
+    <!-- استفاده از عبارات AngularJS -->
+    <h1>{{ message }}</h1>
+
+    <!-- استفاده از یک فیلتر -->
+    <p>{{ message | reverse }}</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dog Class Example</title>
+</head>
+<body>
+    <div id="output"></div>
+    <script>
+        // Class definition
+        class Dog {
+          constructor(name, breed) {
+            this.name = name;
+            this.breed = breed;
+          }
+
+          bark() {
+            return "Woof! Woof!";
+          }
+        }
+
+        // Creating objects based on the class
+        let dog1 = new Dog("Buddy", "Golden Retriever");
+        let dog2 = new Dog("Max", "Labrador");
+
+        // Using the objects
+        const dog1Name = dog1.name;
+        const dog2Breed = dog2.breed;
+        const dog1Bark = dog1.bark();
+        const dog2Bark = dog2.bark();
+
+        // Display the information in the HTML document
+        const outputDiv = document.getElementById("output");
+        outputDiv.innerHTML = `
+            <p>Name of Dog 1: ${dog1Name}</p>
+            <p>Breed of Dog 2: ${dog2Breed}</p>
+            <p>Dog 1 says: ${dog1Bark}</p>
+            <p>Dog 2 says: ${dog2Bark}</p>
+        `;
+    </script>
+</body>
+</html>

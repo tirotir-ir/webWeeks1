@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- پیوند به کتابخانه Google Charts -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    // بارگیری کتابخانه Google Charts
+    google.charts.load('current', {'packages':['corechart']});
+    
+    // تعریف تابع برای رسم نمودار
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      // گرفتن داده‌های ورودی کاربر از فرم
+      var year = document.getElementById('year').value;
+      var productPrices = {};
+
+      // گرفتن قیمت محصولات از input های دارای کلاس "product-price"
+      var productInputs = document.getElementsByClassName('product-price');
+      for (var i = 0; i < productInputs.length; i++) {
+        var productInput = productInputs[i];
+        var productName = productInput.getAttribute('data-product');
+        var productPrice = parseFloat(productInput.value);
+        if (!isNaN(productPrice)) {
+          productPrices[productName] = productPrice;
+        }
+      }
+
+      // تبدیل داده‌های جمع‌آوری شده به یک آرایه
+      var chartData = [['محصول', 'قیمت']];
+      for (var productName in productPrices) {
+        chartData.push([productName, productPrices[productName]]);
+      }
+
+      // ایجاد داده‌ها برای نمودار
+      var data = google.visualization.arrayToDataTable(chartData);
+
+      // تنظیمات نمودار
+      var options = {
+        title: 'مقایسه قیمت محصولات در سال ' + year,
+        vAxis: { title: 'قیمت' },
+        hAxis: { title: 'محصول' }
+      };
+
+      // ایجاد یک نمودار ستونی
+      var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+
+      // نمایش نمودار
+      chart.draw(data, options);
+    }
+  </script>
+</head>
+<body>
+  <!-- فرم برای ورود اطلاعات کاربر -->
+  <form id="data-form">
+    <label for="year">سال:</label>
+    <input type="text" id="year" name="year" required><br><br>
+
+    <label for="product_a_price">قیمت محصول A:</label>
+    <input type="text" class="product-price" data-product="محصول A" required><br><br>
+
+    <label for="product_b_price">قیمت محصول B:</label>
+    <input type="text" class="product-price" data-product="محصول B" required><br><br>
+
+    <label for="product_c_price">قیمت محصول C:</label>
+    <input type="text" class="product-price" data-product="محصول C" required><br><br>
+
+    <button type="button" onclick="drawChart()">رسم نمودار</button>
+  </form>
+
+  <!-- المان برای نمایش نمودار -->
+  <div id="chart_div" style="width: 900px; height: 500px;"></div>
+</body>
+</html>

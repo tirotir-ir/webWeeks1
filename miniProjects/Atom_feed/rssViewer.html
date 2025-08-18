@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RSS Viewer</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>RSS Viewer</h1>
+    <ul id="rss-feed"></ul>
+    
+    <script>
+        $(document).ready(function() {
+            // Replace this URL with the RSS feed you want to display
+            var rssFeedURL = "https://example.com/rss-feed.xml";
+
+            $.ajax({
+                url: 'https://api.rss2json.com/v1/api.json',
+                method: 'GET',
+                dataType: 'json',
+                data: {
+                    rss_url: rssFeedURL,
+                    api_key: 'YOUR_API_KEY', // You may need an API key for the RSS to JSON conversion service
+                    count: 10 // Number of feed items to display
+                },
+                success: function(data) {
+                    if (data.status === 'ok') {
+                        var items = data.items;
+                        var rssList = $('#rss-feed');
+                        
+                        $.each(items, function(index, item) {
+                            var listItem = '<li><a href="' + item.link + '">' + item.title + '</a><br>' + item.description + '</li>';
+                            rssList.append(listItem);
+                        });
+                    } else {
+                        console.error('Failed to retrieve RSS feed.');
+                    }
+                },
+                error: function() {
+                    console.error('Failed to retrieve RSS feed.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

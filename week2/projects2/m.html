@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پیتزا فروشی</title>
+    <style>
+        body { font-family: Tahoma, sans-serif; margin: 0; padding: 0; background-color: #fff3e0; direction: rtl; }
+        header { background-color: #d32f2f; color: white; text-align: center; padding: 1em; }
+        nav { background-color: #c62828; overflow: hidden; text-align: center; }
+        nav a { display: inline-block; color: white; padding: 14px 16px; text-decoration: none; }
+        nav a:hover { background-color: #ff6659; color: black; }
+        section { margin: 15px; padding: 15px; background-color: white; border-radius: 5px; }
+        article { margin-bottom: 20px; }
+        h2 { color: #d32f2f; }
+        img { width: 50%; height: auto; border-radius: 5px; }
+        footer { background-color: #c62828; color: white; text-align: center; padding: 1em; position: fixed; width: 100%; bottom: 0; }
+        .menu-item { display:inline-block; justify-content: space-between; margin-bottom: 10px; }
+        .menu-item p { margin: 0; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>پیتزا فروشی ما</h1>
+    </header>
+    <nav>
+        <a href="#home">خانه</a>
+        <a href="m.html">منو</a>
+        <a href="d.html">درباره ما</a>
+        <a href="t.html">تماس با ما</a>
+    </nav>
+    <section id="home">
+        <h2>خوش آمدید</h2>
+        <article>
+            <h3>بهترین پیتزاها در شهر</h3>
+            <p>ما با استفاده از تازه‌ترین مواد اولیه، خوشمزه‌ترین پیتزاها را برای شما آماده می‌کنیم.</p>
+        </article>
+        <article>
+            <img src="pizza.PNG" alt="پیتزا">
+        </article>
+    </section>
+    <section id="menu">
+        <h2>منو</h2>
+        <article class="menu-item">
+            <p>پیتزا مارگاریتا</p>
+            <p>50,000 تومان</p>
+        </article>
+        <article class="menu-item">
+            <p>پیتزا پپرونی</p>
+            <p>60,000 تومان</p>
+        </article>
+        <article class="menu-item">
+            <p>پیتزا چهار فصل</p>
+            <p>70,000 تومان</p>
+        </article>
+    </section>
+    <section id="about">
+        <h2>درباره ما</h2>
+        <p>پیتزا فروشی ما با بیش از ۱۰ سال سابقه در ارائه بهترین پیتزاهای ایتالیایی در خدمت شما عزیزان است.</p>
+    </section>
+    <section id="contact">
+        <h2>تماس با ما</h2>
+        <form>
+            <label for="name">نام:</label>
+            <input type="text" id="name" name="name" required><br><br>
+            <label for="phone">تلفن:</label>
+            <input type="tel" id="phone" name="phone" required><br><br>
+            <label for="message">پیام:</label><br>
+            <textarea id="message" name="message" rows="4" required></textarea><br><br>
+            <input type="submit" value="ارسال">
+        </form>
+    </section>
+    <footer>
+        <p>&copy; 2024 پیتزا فروشی ما. تمامی حقوق محفوظ است.</p>
+    </footer>
+    <script>
+        document.getElementById('contact').style.color = 'blue';
+    </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+body {
+  color: red;
+}
+
+h1 {
+  color: green;
+  text-align: center;
+  text-shadow: 2px 2px;
+  text-decoration: underline;
+}
+
+h2 {
+	color: blue;
+}

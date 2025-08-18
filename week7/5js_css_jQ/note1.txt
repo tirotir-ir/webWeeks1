@@ -1,0 +1,19 @@
+
+jQuery10.html //extract data from site! jsonplaceholder
+
+jQuery10.html //form handling
+
+
+jQuery14.html //slider 0-100
+
+jQuery15.html // accordion
+
+jQuery16.html //jsonplaceholder
+jQuery17.html //jsonplaceholder
+jQuery20.html //image ok
+jQuery21.html //api ????
+jQuery22.html //Quiz
+jQuery23.html //ImageGallery
+timer.html
+
+

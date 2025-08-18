@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript Examples</title>
+</head>
+<body>
+    <h1>JavaScript Examples</h1>
+
+    <!-- Lesson 1: Hello World -->
+    <h2>Lesson 1: Hello World</h2>
+    <p>Let's start with a simple "Hello, World!" example in JavaScript:</p>
+    <pre id="helloWorld"></pre>
+
+    <script>
+        // Lesson 1: Hello World
+        let helloMessage = "Hello, World!";
+        document.getElementById('helloWorld').textContent = helloMessage;
+    </script>
+
+    <!-- Lesson 2: Variables -->
+    <h2>Lesson 2: Variables</h2>
+    <p>JavaScript allows you to declare variables. For example:</p>
+    <pre id="variables"></pre>
+
+    <script>
+        // Lesson 2: Variables
+        let x = 10;
+        document.getElementById('variables').textContent = "The value of x is: " + x;
+    </script>
+
+    <!-- Lesson 3: Conditional Statements -->
+    <h2>Lesson 3: Conditional Statements</h2>
+    <p>You can use conditional statements to make decisions in your code:</p>
+    <pre id="conditionalStatements"></pre>
+
+    <script>
+        // Lesson 3: Conditional Statements
+        let conditionalMessage;
+        if (x > 5) {
+            conditionalMessage = "x is greater than 5.";
+        } else {
+            conditionalMessage = "x is not greater than 5.";
+        }
+        document.getElementById('conditionalStatements').textContent = conditionalMessage;
+    </script>
+
+    <!-- Lesson 4: Loops -->
+    <h2>Lesson 4: Loops</h2>
+    <p>Loops allow you to repeat actions in your code. For example, a for loop:</p>
+    <pre id="loops"></pre>
+
+    <script>
+        // Lesson 4: Loops
+        let loopOutput = "";
+        for (let i = 0; i < 5; i++) {
+            loopOutput += "Iteration " + i + "\n";
+        }
+        document.getElementById('loops').textContent = loopOutput;
+    </script>
+
+    <!-- Lesson 5: Functions -->
+    <h2>Lesson 5: Functions</h2>
+    <p>Functions are reusable blocks of code. Here's an example:</p>
+    <pre id="functions"></pre>
+
+    <script>
+        // Lesson 5: Functions
+        function add(a, b) {
+            return a + b;
+        }
+
+        let result = add(5, 3);
+        document.getElementById('functions').textContent = "Result of add(5, 3) is: " + result;
+    </script>
+
+    <!-- Lesson 6: Arrays/Lists -->
+    <h2>Lesson 6: Arrays/Lists</h2>
+    <p>You can use arrays to store collections of data:</p>
+    <pre id="arrays"></pre>
+
+    <script>
+        // Lesson 6: Arrays/Lists
+        let myArray = [1, 2, 3, 4, 5];
+        document.getElementById('arrays').textContent = "myArray contains: " + myArray.join(', ');
+    </script>
+
+    <!-- Lesson 7: Objects/Classes (N/A in JavaScript) -->
+
+    <!-- Lesson 8: File I/O (N/A in JavaScript) -->
+
+    <!-- Lesson 9: Error Handling -->
+    <h2>Lesson 9: Error Handling</h2>
+    <p>Error handling helps deal with unexpected issues in your code:</p>
+    <pre id="errorHandling"></pre>
+
+    <script>
+        // Lesson 9: Error Handling
+        try {
+            let result2 = 10 / 0;
+        } catch (error) {
+            document.getElementById('errorHandling').textContent = "Error: " + error.message;
+        }
+    </script>
+
+    <!-- Lesson 10: JSON Handling (N/A in JavaScript) -->
+
+    <!-- Lesson 11: Web Development (HTTP Requests) (N/A in JavaScript) -->
+
+</body>
+</html>

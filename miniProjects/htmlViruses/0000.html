@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #222;
+            margin: 0;
+            overflow: hidden;
+        }
+        button {
+            padding: 20px 40px;
+            font-size: 1.5em;
+            color: #fff;
+            background-color: #ff5722;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        button:active {
+            transform: scale(0.95);
+        }
+        .emoji {
+            position: absolute;
+            font-size: 2em;
+            animation: float 2s forwards;
+        }
+        @keyframes float {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-100px) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<button onclick="addEmoji()">Click Me!</button>
+
+<script>
+    const emojis = ["🎉", "✨", "🚀", "🌟", "💥", "🍀"];
+    function addEmoji() {
+        const emoji = document.createElement('div');
+        emoji.classList.add('emoji');
+        emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        emoji.style.left = Math.random() * 100 + 'vw';
+        emoji.style.top = '90vh';
+        document.body.appendChild(emoji);
+        setTimeout(() => {
+            emoji.remove();
+        }, 2000);
+    }
+</script>
+
+</body>
+</html>

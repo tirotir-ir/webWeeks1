@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    #imageContainer {
+      width: 300px;
+      height: 200px;
+      overflow: hidden;
+    }
+    #imageContainer img {
+      width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+
+<div id="imageContainer">
+  <img src="image1.jpg" alt="Image 1">
+</div>
+<button id="prev">Previous</button>
+<button id="next">Next</button>
+
+<script>
+$(document).ready(function(){
+  var images = ["image1.jpg", "image2.jpg", "image3.jpg"];
+  var currentIndex = 0;
+  
+  function updateImage() {
+    $("#imageContainer img").attr("src", images[currentIndex]);
+  }
+  
+  $("#prev").click(function(){
+    if (currentIndex > 0) {
+      currentIndex--;
+      updateImage();
+    }
+  });
+  
+  $("#next").click(function(){
+    if (currentIndex < images.length - 1) {
+      currentIndex++;
+      updateImage();
+    }
+  });
+});
+</script>
+
+</body>
+</html>

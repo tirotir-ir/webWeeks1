@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<input type="text" id="cityInput" placeholder="Enter city name">
+<button id="getWeather">Get Weather</button>
+<div id="weatherInfo"></div>
+
+<script>
+$(document).ready(function(){
+  $("#getWeather").click(function(){
+    var apiKey = "YOUR_API_KEY";
+    var city = $("#cityInput").val();
+    var url = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey;
+
+    $.getJSON(url, function(data){
+      var temp = Math.round(data.main.temp - 273.15);
+      var description = data.weather[0].description;
+      $("#weatherInfo").html("Temperature: " + temp + "°C<br>Description: " + description);
+    });
+  });
+});
+</script>
+
+</body>
+</html>

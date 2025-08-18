@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GSAP Animation Test</title>
+  <!-- Include the GSAP library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+</head>
+<body>
+  <!-- The element to animate -->
+  <div id="icon" style="width: 30px; height: 50px; background-color: red;"></div>
+ 
+  <script>
+// HTML: <svg id="icon" ...></svg>
+gsap.to("#icon", { duration: 2, rotation: 360, transformOrigin: "center center" });
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interest Calculator</title>
+<style>
+    body {
+	
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+    }
+    h1 {
+        text-align: center;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    input, button {
+        padding: 5px;
+        margin-bottom: 10px;
+    }
+    #result {
+        font-weight: bold;
+    }
+</style>
+
+</head>
+<body>
+    <h1>Interest Calculator</h1>
+    <label for="principal">Principal Amount:</label>
+    <input type="number" id="principal">
+    <label for="rate">Interest Rate:</label>
+    <input type="number" id="rate">
+    <label for="time">Time (years):</label>
+    <input type="number" id="time">
+    <button id="calculateButton">Calculate</button>
+    <p id="result">نتیجه</p>
+
+    <script>
+        document.getElementById("calculateButton").addEventListener("click", function () {
+            const principal = parseFloat(document.getElementById("principal").value);
+            const rate = parseFloat(document.getElementById("rate").value);
+            const time = parseFloat(document.getElementById("time").value);
+
+            const interest = (principal * rate * time) / 100;
+            const totalAmount = principal + interest;
+
+            document.getElementById("result").innerText = `Interest: ${interest.toFixed(2)} | Total Amount: ${totalAmount.toFixed(2)}`;
+        });
+    </script>
+</body>
+</html>

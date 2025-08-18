@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Class Example</title>
+</head>
+<body>
+    <div id="output"></div>
+    <script>
+        // Class definition for Student
+        class Student {
+          constructor(name, age) {
+            this.name = name;
+            this.age = age;
+            this.favoriteSubjects = [];
+          }
+
+          addFavoriteSubject(subject) {
+            this.favoriteSubjects.push(subject);
+          }
+
+          displayInfo() {
+            return `Name: ${this.name}, Age: ${this.age}, Favorite Subjects: ${this.favoriteSubjects.join(", ")}`;
+          }
+        }
+
+        // Creating objects based on the Student class
+        let student1 = new Student("Alice", 18);
+        let student2 = new Student("Bob", 20);
+
+        // Using the objects
+        student1.addFavoriteSubject("Math");
+        student1.addFavoriteSubject("History");
+        student2.addFavoriteSubject("Physics");
+
+        const student1Info = student1.displayInfo();
+        const student2Info = student2.displayInfo();
+
+        // Display the student information in the HTML document
+        const outputDiv = document.getElementById("output");
+        outputDiv.innerHTML = `
+            <p>${student1Info}</p>
+            <p>${student2Info}</p>
+        `;
+    </script>
+</body>
+</html>

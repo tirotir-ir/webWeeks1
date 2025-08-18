@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Data Example</title>
+</head>
+<body>
+    <h2>CSV Data Example</h2>
+    <div id="csv-data"></div>
+
+    <script>
+        const csvData = `
+            name,email
+            John Doe,johndoe@example.com
+            Jane Smith,janesmith@example.com
+        `;
+
+        const lines = csvData.trim().split("\n");
+        const headers = lines[0].split(",");
+        let output = "<ul>";
+
+        for (let i = 1; i < lines.length; i++) {
+            const data = lines[i].split(",");
+            output += "<li>";
+            for (let j = 0; j < headers.length; j++) {
+                output += `${headers[j]}: ${data[j]} `;
+            }
+            output += "</li>";
+        }
+        output += "</ul>";
+
+        document.getElementById("csv-data").innerHTML = output;
+    </script>
+</body>
+</html>

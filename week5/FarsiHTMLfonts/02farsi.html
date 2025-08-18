@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Three Persian Fonts Example</title>
+  <style>
+    body {
+      font-family: Tahoma, Geneva, sans-serif;
+      direction: rtl;
+      font-size: 12px;
+    }
+
+    @font-face {
+      font-family: 'BYekan';
+      src: url('BYekan.eot');
+      src: url('BYekan.eot') format('embedded-opentype'),
+           url('BYekan.woff') format('woff'),
+           url('BYekan.ttf') format('truetype');
+      font-style: normal;
+      font-weight: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'IranNastaliq';
+      src: url('IranNastaliq.eot');
+      src: url('IranNastaliq.eot') format('embedded-opentype'),
+           url('IranNastaliq.woff') format('woff'),
+           url('IranNastaliq.ttf') format('truetype');
+      font-style: normal;
+      font-weight: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'BMitra';
+      src: url('BMitra.eot');
+      src: url('BMitra.eot') format('embedded-opentype'),
+           url('BMitra.woff') format('woff'),
+           url('BMitra.ttf') format('truetype');
+      font-style: normal;
+      font-weight: normal;
+      font-display: swap;
+    }
+
+    .section1 {
+      font-family: 'BYekan', Tahoma, Geneva, sans-serif;
+      font-size: 36px;
+    }
+
+    .section2 {
+      font-family: 'IranNastaliq', Tahoma, Geneva, sans-serif;
+      font-size: 20px;
+    }
+
+    .section3 {
+      font-family: 'BMitra', Tahoma, Geneva, sans-serif;
+      font-size: 36px;
+    }
+  </style>
+</head>
+<body>
+  <div class="section1">
+    <h1>عنوان بخش اول با فونت BYekan</h1>
+    <p>متن پاراگراف بخش اول با فونت BYekan</p>
+  </div>
+  <hr>
+  <div class="section2">
+    <h1>عنوان بخش دوم با فونت IranNastaliq</h1>
+    <p>متن پاراگراف بخش دوم با فونت IranNastaliq</p>
+  </div>
+  <hr>
+  <div class="section3">
+    <h1>عنوان بخش سوم با فونت BMitra</h1>
+    <p>متن پاراگراف بخش سوم با فونت BMitra</p>
+  </div>
+</body>
+</html>

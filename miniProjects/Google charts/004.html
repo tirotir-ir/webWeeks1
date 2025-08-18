@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- لینک کتابخانه Google Charts -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    // بارگذاری کتابخانه Google Charts
+    google.charts.load('current', {'packages':['corechart']});
+    
+    // تعریف تابع برای رسم نمودار
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      // ایجاد داده‌ها برای نمودار نقطه‌ای
+      var data = google.visualization.arrayToDataTable([
+        ['سن', 'نمره'],
+        [12, 87],
+        [15, 92],
+        [18, 78],
+        [21, 95],
+        [24, 88],
+        [27, 70]
+      ]);
+
+      // تنظیمات نمودار نقطه‌ای
+      var options = {
+        title: 'نمودار نقطه‌ای نمره‌های دانش‌آموزان بر اساس سن',
+        hAxis: { title: 'سن' },
+        vAxis: { title: 'نمره' }
+      };
+
+      // ایجاد یک نمودار نقطه‌ای جدید و نمایش آن در المان با id "chart_div"
+      var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+
+      // نمایش نمودار
+      chart.draw(data, options);
+    }
+  </script>
+</head>
+<body>
+  <!-- المانی برای نمایش نمودار -->
+  <div id="chart_div" style="width: 900px; height: 500px;"></div>
+</body>
+</html>

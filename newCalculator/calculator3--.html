@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Calculator</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        .dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        .calculator {
+            display: inline-block;
+            padding: 20px;
+            border: 2px solid #444;
+            border-radius: 10px;
+            background-color: #ffffff;
+            color: #000;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        .dark-mode .calculator {
+            background-color: #222;
+            color: #fff;
+            border-color: #333;
+        }
+
+        .display {
+            width: 100%;
+            height: 60px;
+            margin-bottom: 20px;
+            text-align: right;
+            padding-right: 15px;
+            font-size: 26px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: 2px solid #333;
+            background-color: #fff;
+            color: #000;
+        }
+
+        .dark-mode .display {
+            background-color: #000;
+            color: #0f0;
+            border-color: #444;
+        }
+
+        .button {
+            width: 70px;
+            height: 70px;
+            margin: 5px;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 10px;
+            background-color: #f0f0f0;
+            border: none;
+            transition: background-color 0.2s, transform 0.2s;
+            color: #000;
+        }
+
+        .dark-mode .button {
+            background-color: #555;
+            color: #fff;
+        }
+
+        .button:hover {
+            background-color: #ddd;
+            transform: scale(1.05);
+        }
+
+        .dark-mode .button:hover {
+            background-color: #666;
+        }
+
+        .button.operation {
+            background-color: #f44336;
+        }
+
+        .dark-mode .button.operation {
+            background-color: #f44336;
+        }
+
+        .button.operation:hover {
+            background-color: #e53935;
+        }
+
+        .dark-mode .button.operation:hover {
+            background-color: #e53935;
+        }
+
+        .button.equal {
+            background-color: #4CAF50;
+        }
+
+        .dark-mode .button.equal {
+            background-color: #4CAF50;
+        }
+
+        .button.equal:hover {
+            background-color: #43A047;
+        }
+
+        .dark-mode .button.equal:hover {
+            background-color: #43A047;
+        }
+
+        .button.clear {
+            background-color: #ff9800;
+        }
+
+        .dark-mode .button.clear {
+            background-color: #ff9800;
+        }
+
+        .button.clear:hover {
+            background-color: #fb8c00;
+        }
+
+        .dark-mode .button.clear:hover {
+            background-color: #fb8c00;
+        }
+
+        .switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .switch input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .slider {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            background-color: #ccc;
+            border-radius: 34px;
+            transition: background-color 0.4s;
+        }
+
+        .slider:before {
+            content: "";
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.4s;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+    </style>
+</head>
+<body>
+    <div class="switch">
+        <label>
+            <input type="checkbox" id="theme-toggle">
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <div class="calculator">
+        <input type="text" class="display" id="display" disabled>
+        <div>
+            <button class="button" onclick="appendNumber('1')">1</button>
+            <button class="button" onclick="appendNumber('2')">2</button>
+            <button class="button" onclick="appendNumber('3')">3</button>
+            <button class="button operation" onclick="appendOperator('+')">+</button>
+        </div>
+        <div>
+            <button class="button" onclick="appendNumber('4')">4</button>
+            <button class="button" onclick="appendNumber('5')">5</button>
+            <button class="button" onclick="appendNumber('6')">6</button>
+            <button class="button operation" onclick="appendOperator('-')">-</button>
+        </div>
+        <div>
+            <button class="button" onclick="appendNumber('7')">7</button>
+            <button class="button" onclick="appendNumber('8')">8</button>
+            <button class="button" onclick="appendNumber('9')">9</button>
+            <button class="button operation" onclick="appendOperator('*')">*</button>
+        </div>
+        <div>
+            <button class="button" onclick="appendNumber('0')">0</button>
+            <button class="button" onclick="appendDecimal()">.</button>
+            <button class="button equal" onclick="calculate()">=</button>
+            <button class="button operation" onclick="appendOperator('/')">/</button>
+        </div>
+        <div>
+            <button class="button clear" onclick="clearDisplay()">C</button>
+            <button class="button operation" onclick="deleteLast()">DEL</button>
+        </div>
+    </div>
+
+    <script>
+        let display = document.getElementById('display');
+        let currentInput = '';
+        let lastInput = '';
+
+        function appendNumber(number) {
+            currentInput += number;
+            lastInput = number;
+            display.value = currentInput;
+        }
+
+        function appendDecimal() {
+            if (!currentInput.includes('.')) {
+                currentInput += '.';
+                lastInput = '.';
+                display.value = currentInput;
+            }
+        }
+
+        function appendOperator(operator) {
+            if (isOperator(lastInput)) {
+                return;
+            }
+            currentInput += ' ' + operator + ' ';
+            lastInput = operator;
+            display.value = currentInput;
+        }
+
+        function isOperator(char) {
+            return ['+', '-', '*', '/'].includes(char);
+        }
+
+        function clearDisplay() {
+            currentInput = '';
+            lastInput = '';
+            display.value = currentInput;
+        }
+
+        function deleteLast() {
+            currentInput = currentInput.trim();
+            if (currentInput.endsWith(' ')) {
+                currentInput = currentInput.slice(0, -3);
+            } else {
+                currentInput = currentInput.slice(0, -1);
+            }
+            lastInput = currentInput[currentInput.length - 1];
+            display.value = currentInput;
+        }
+
+        function calculate() {
+            try {
+                currentInput = eval(currentInput).toString();
+                display.value = currentInput;
+                lastInput = currentInput;
+            } catch (e) {
+                display.value = 'Error';
+                currentInput = '';
+                lastInput = '';
+            }
+        }
+
+        // Theme toggle functionality
+        const toggleSwitch = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        toggleSwitch.addEventListener('change', () => {
+            if (toggleSwitch.checked) {
+                body.classList.add('dark-mode');
+            } else {
+                body.classList.remove('dark-mode');
+            }
+        });
+    </script>
+</body>
+</html>

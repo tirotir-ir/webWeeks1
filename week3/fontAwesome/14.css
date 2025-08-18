@@ -1,0 +1,83 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.neon-container {
+    text-align: center;
+}
+
+.neon-title {
+    font-size: 3rem;
+    margin-bottom: 40px;
+    color: #08f7fe;
+    text-shadow: 0 0 5px #08f7fe, 0 0 10px #08f7fe, 0 0 20px #08f7fe;
+}
+
+.neon-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.neon-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #08f7fe;
+    box-shadow: 0 0 20px rgba(8, 247, 254, 0.5);
+}
+
+.neon-card:hover {
+    transform: translateY(-15px) scale(1.05);
+    box-shadow: 0 0 40px rgba(8, 247, 254, 1);
+}
+
+.neon-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    color: #ff6ec7;
+    text-shadow: 0 0 5px #ff6ec7, 0 0 10px #ff6ec7, 0 0 20px #ff6ec7;
+}
+
+.neon-card h2 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: #08f7fe;
+    text-shadow: 0 0 5px #08f7fe, 0 0 10px #08f7fe, 0 0 20px #08f7fe;
+}
+
+.neon-card p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.neon-card button {
+    background-color: #08f7fe;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    color: #24243e;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0 10px #08f7fe, 0 0 20px #08f7fe;
+}
+
+.neon-card button:hover {
+    background-color: #ff6ec7;
+    box-shadow: 0 0 10px #ff6ec7, 0 0 20px #ff6ec7;
+}

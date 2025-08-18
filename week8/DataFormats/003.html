@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Data Example</title>
+</head>
+<body>
+    <h2>JSON Data Example</h2>
+    <div id="json-data"></div>
+
+    <script>
+        const jsonData = `
+            {
+                "users": [
+                    {
+                        "name": "John Doe",
+                        "email": "johndoe@example.com"
+                    },
+                    {
+                        "name": "Jane Smith",
+                        "email": "janesmith@example.com"
+                    }
+                ]
+            }
+        `;
+
+        const obj = JSON.parse(jsonData);
+
+        let output = "<ul>";
+        obj.users.forEach(user => {
+            output += `<li>Name: ${user.name}, Email: ${user.email}</li>`;
+        });
+        output += "</ul>";
+
+        document.getElementById("json-data").innerHTML = output;
+    </script>
+</body>
+</html>

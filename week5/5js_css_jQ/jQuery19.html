@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<input type="text" id="textInput" placeholder="Type here">
+<ul id="textList"></ul>
+
+<script>
+$(document).ready(function(){
+  $("#textInput").keyup(function(){
+    var text = $(this).val();
+    $("#textList").empty();
+    for (var i = 0; i < text.length; i++) {
+      $("#textList").append("<li>" + text[i] + "</li>");
+    }
+  });
+});
+</script>
+
+</body>
+</html>

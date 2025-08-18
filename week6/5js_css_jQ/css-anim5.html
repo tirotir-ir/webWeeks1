@@ -1,0 +1,21 @@
+<html>
+
+<body>
+<style>
+    @keyframes gradient {
+        0% { background-position: 0% 50%; }
+        100% { background-position: 100% 50%; }
+    }
+    .gradient-text {
+        background: linear-gradient(45deg, green, blue, #ff8a00);
+        background-size: 200% 200%;
+        color: transparent;
+        background-clip: text;
+        -webkit-background-clip: text;
+        animation: gradient 3s ease-in-out infinite;
+    }
+</style>
+<p class="gradient-text">Hello, World!</p>
+
+</body>
+</html>

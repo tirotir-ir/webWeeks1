@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Particle Explosion with Sound</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            height: 100vh;
+            background-color: #282c34;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .particle {
+            position: absolute;
+            background-color: #61dafb;
+            border-radius: 50%;
+            animation: explode 1s ease-out forwards;
+        }
+        @keyframes explode {
+            to {
+                transform: translate(var(--x), var(--y)) scale(0);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<audio id="explosionSound" src="https://www.soundjay.com/button/sounds/button-4.mp3" preload="auto"></audio>
+
+<script>
+    document.addEventListener('click', (e) => {
+        playSound();
+        for (let i = 0; i < 30; i++) {
+            createParticle(e.clientX, e.clientY);
+        }
+    });
+
+    function createParticle(x, y) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        particle.style.width = `${Math.random() * 10 + 5}px`;
+        particle.style.height = particle.style.width;
+        particle.style.left = `${x}px`;
+        particle.style.top = `${y}px`;
+        particle.style.setProperty('--x', `${Math.random() * 200 - 100}px`);
+        particle.style.setProperty('--y', `${Math.random() * 200 - 100}px`);
+        document.body.appendChild(particle);
+        setTimeout(() => {
+            particle.remove();
+        }, 1000);
+    }
+
+    function playSound() {
+        const sound = document.getElementById('explosionSound');
+        sound.currentTime = 0;
+        sound.play();
+    }
+</script>
+
+</body>
+</html>

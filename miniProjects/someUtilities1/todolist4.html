@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive To-Do List</title>
+    <style>
+        /* ... (existing styles) ... */
+    </style>
+    <script>
+        function addTask() {
+            var taskText = document.getElementById("taskInput").value;
+            if (taskText.trim() !== "") {
+                var taskList = document.getElementById("taskList");
+                var li = document.createElement("li");
+                li.innerHTML = `
+                    <input type="checkbox" onchange="toggleTaskCompletion(this)">
+                    <span>${taskText}</span>
+                    <button class="delete-btn" onclick="removeTask(this)">Delete</button>
+                `;
+                taskList.appendChild(li);
+                document.getElementById("taskInput").value = "";
+            }
+        }
+
+        function removeTask(button) {
+            var li = button.parentElement;
+            li.parentElement.removeChild(li);
+        }
+
+        function toggleTaskCompletion(checkbox) {
+            var taskSpan = checkbox.nextElementSibling;
+            if (checkbox.checked) {
+                taskSpan.classList.add("completed-task");
+            } else {
+                taskSpan.classList.remove("completed-task");
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                addTask();
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Interactive To-Do List</h1>
+    <div id="todo-container">
+        <input type="text" id="taskInput" placeholder="Enter a task" onkeypress="handleKeyPress(event)">
+        <button onclick="addTask()">Add Task</button>
+        <ul id="taskList">
+            <!-- Tasks will be added dynamically here -->
+        </ul>
+    </div>
+</body>
+</html>

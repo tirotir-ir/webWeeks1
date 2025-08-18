@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- لینک کتابخانه Google Charts -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    // بارگذاری کتابخانه Google Charts
+    google.charts.load('current', {'packages':['corechart']});
+    
+    // تعریف تابع برای رسم نمودار
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      // اگر داده‌ها از طریق ورودی کاربر دریافت شده باشند
+      var userInputData = getUserInputData(); // تابعی که داده‌ها را از ورودی کاربر دریافت می‌کند
+
+      // اگر داده‌های معتبر باشند، نمودار را رسم کن
+      if (userInputData) {
+        var data = google.visualization.arrayToDataTable(userInputData);
+
+        var options = {
+          title: 'نمودار داده‌های ورودی کاربر',
+          legend: { position: 'none' }
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    }
+
+    function getUserInputData() {
+      // در اینجا شما باید کدی بنویسید که داده‌ها را از ورودی کاربر دریافت کند و آنها را به صورت آرایه به تابع بالا برگرداند
+      // به عنوان مثال، می‌توانید از prompt یا فرم‌های HTML استفاده کنید.
+      // متغیر userInputData باید آرایه‌ای با دو ستون (برچسب‌ها و مقادیر) باشد.
+      // مثال:
+      // return [['مورخه', 'فروش'], ['1399', 1000], ['1400', 1500], ['1401', 2000]];
+    }
+  </script>
+</head>
+<body>
+  <!-- المان فرم برای ورود داده‌ها -->
+  <form id="data-form">
+    <label for="data">داده‌ها (فرمت: ['برچسب', مقدار], ...)</label>
+    <input type="text" id="data" name="data" required>
+    <button type="button" onclick="drawChart()">رسم نمودار</button>
+  </form>
+
+  <!-- المانی برای نمایش نمودار -->
+  <div id="chart_div" style="width: 900px; height: 500px;"></div>
+</body>
+</html>

@@ -1,0 +1,4 @@
+//Creating a JSON Array
+{
+  "fruits": ["apple", "banana", "orange", "grape"]
+}

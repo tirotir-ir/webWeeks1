@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML with Separate JavaScript File and FontAwesome</title>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> -->
+    <link rel="stylesheet" href="fontawesome-pro-6.5.0-web\css\all.min.css">
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+            color: #333;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* Header Styling */
+        h1 {
+            font-size: 3em;
+            color: #333;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        /* Paragraph Styling */
+        p {
+            font-size: 1.125em;
+            margin-bottom: 30px;
+            color: #555;
+            max-width: 600px;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        /* Button Styling */
+        button {
+            display: inline-flex;
+            align-items: center;
+            font-size: 1em;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 30px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0px 4px 6px rgba(0, 123, 255, 0.3);
+        }
+
+        button i {
+            margin-right: 10px;
+        }
+
+        /* Button Hover Effect */
+        button:hover {
+            background-color: #1fb594;
+            transform: translateY(-2px);
+            box-shadow: 0px 6px 8px rgba(0, 123, 255, 0.4);
+        }
+
+        button:active {
+            transform: translateY(1px);
+            box-shadow: 0px 2px 4px rgba(0, 123, 255, 0.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.5em;
+            }
+
+            p {
+                font-size: 1em;
+                margin-bottom: 20px;
+            }
+
+            button {
+                font-size: 0.875em;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <h1>Welcome to My Website</h1>
+    <p>This is a paragraph. Here we can add more text to showcase the enhanced styling and make sure it looks great across all devices.</p>
+    <button onclick="showMessage()"><i class="fas fa-car"></i> Click Me</button>
+</body>
+</html>

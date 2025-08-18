@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Quote Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .quote-box {
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #quote {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #newQuoteBtn {
+            padding: 10px 20px;
+            font-size: 1em;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #newQuoteBtn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="quote-box">
+        <p id="quote">Click the button to see a quote!</p>
+        <button id="newQuoteBtn" onclick="generateQuote()">New Quote</button>
+    </div>
+
+    <script>
+        const quotes = [
+            "The best way to get started is to quit talking and begin doing. – Walt Disney",
+            "Success is not the key to happiness. Happiness is the key to success. – Albert Schweitzer",
+            "Don’t let yesterday take up too much of today. – Will Rogers",
+            "It’s not whether you get knocked down, it’s whether you get up. – Vince Lombardi",
+            "People who are crazy enough to think they can change the world, are the ones who do. – Rob Siltanen",
+            "Success usually comes to those who are too busy to be looking for it. – Henry David Thoreau",
+            "The road to success and the road to failure are almost exactly the same. – Colin R. Davis"
+        ];
+
+        function generateQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            document.getElementById("quote").innerText = quotes[randomIndex];
+        }
+    </script>
+
+</body>
+
+</html>

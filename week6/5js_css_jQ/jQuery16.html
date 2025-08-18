@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<div id="output"></div>
+
+<script>
+$(document).ready(function(){
+  $.getJSON("https://jsonplaceholder.typicode.com/posts/1", function(data){
+    $("#output").html("<p>Title: " + data.title + "</p><p>Body: " + data.body + "</p>");
+  });
+});
+</script>
+
+</body>
+</html>

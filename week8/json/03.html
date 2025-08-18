@@ -1,0 +1,20 @@
+//Fetching JSON Data from an External Source
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Random Quote</title>
+</head>
+<body>
+    <h1>Random Quote</h1>
+    <p id="quote"></p>
+
+    <script>
+        fetch('https://api.quotable.io/random')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('quote').innerText = data.content;
+            })
+            .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RSS Feed Example</title>
+    <script src="https://cdn.rawgit.com/sdepold/jquery-rss/3.3.0/dist/jquery.rss.min.js"></script>
+</head>
+<body>
+    <h1>Website with RSS Feed</h1>
+    <div id="rss-feed"></div>
+    
+    <script>
+        $(document).ready(function() {
+            $("#rss-feed").rss("https://example.com/rss-feed.xml", {
+                limit: 10,
+                ssl: true,
+                entryTemplate: '<li><a href="{url}">{title}</a><br>{body}</li>'
+            });
+        });
+    </script>
+</body>
+</html>

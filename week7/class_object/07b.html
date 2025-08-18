@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Class Example</title>
+</head>
+<body>
+    <div id="output"></div>
+    <script>
+        // Class definition for Book
+        class Book {
+          constructor(title, author, pages) {
+            this.title = title;
+            this.author = author;
+            this.pages = pages;
+            this.isRead = false; // Initially, the book is not read
+          }
+
+          isThick() {
+            return this.pages > 500;
+          }
+
+          setTitle(newTitle) {
+            this.title = newTitle;
+          }
+
+          markAsRead() {
+            this.isRead = true;
+          }
+
+          displayInfo() {
+            return `Title: ${this.title}, Author: ${this.author}, Pages: ${this.pages}, Read Status: ${this.isRead ? "Read" : "Not Read"}`;
+          }
+        }
+
+        // Creating objects based on the Book class
+        let book1 = new Book("The Great Gatsby", "F. Scott Fitzgerald", 180);
+        let book2 = new Book("To Kill a Mockingbird", "Harper Lee", 281);
+
+        // Using the objects
+        const book1Info1 = book1.displayInfo();
+        book1.markAsRead();
+        const book1Info2 = book1.displayInfo();
+
+        // Display the book information and results in the HTML document
+        const outputDiv = document.getElementById("output");
+        outputDiv.innerHTML = `
+            <p>Book 1 Info (Before Marking as Read): ${book1Info1}</p>
+            <p>Book 1 Info (After Marking as Read): ${book1Info2}</p>
+        `;
+    </script>
+</body>
+</html>
