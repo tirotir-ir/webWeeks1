@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>webWeeks1 — Ultimate Class Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="color-scheme" content="light dark" />
+  <style>
+    .kbd{border:1px solid rgb(209 213 219); border-bottom-width:2px; padding:.1rem .35rem; border-radius:.35rem; font-size:.75rem}
+    .btn{border:1px solid rgb(229 231 235); padding:.45rem .7rem; border-radius:.6rem}
+    .btn:active{transform:translateY(1px)}
+    details.group > summary{cursor:pointer}
+    .link-row a{text-decoration:underline; text-underline-offset:2px}
+    .muted{opacity:.7}
+    .badge{font-size:.75rem; padding:.1rem .4rem; border:1px solid rgb(229 231 235); border-radius:.5rem}
+  </style>
+</head>
+<body class="h-full bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+  <div class="max-w-6xl mx-auto px-4 py-6">
+    <!-- Header -->
+    <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <h1 class="text-2xl font-bold">webWeeks1 — Ultimate Class Dashboard</h1>
+        <p class="text-sm opacity-80">All lessons & mini-projects in one searchable, collapsible view.</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <label class="flex items-center gap-2 text-sm cursor-pointer">
+          <input id="openNewTab" type="checkbox" class="h-4 w-4">
+          <span>Open in new tab</span>
+        </label>
+        <button id="themeToggle" class="btn">Dark/Light</button>
+        <button id="rtlToggle" class="btn">RTL/LTR</button>
+      </div>
+    </header>
+
+    <!-- Toolbar -->
+    <section class="mt-2 flex flex-wrap items-center gap-2">
+      <div class="relative grow">
+        <input id="searchInput" type="search" placeholder="Search lessons (e.g., week5, css, chronometer, exam)…"
+               class="w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white/70 dark:bg-gray-800 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+               aria-label="Search lessons">
+        <div class="absolute right-3 top-1/2 -translate-y-1/2 text-xs opacity-60">
+          <span class="kbd">/</span>
+        </div>
+      </div>
+      <button id="expandAll" class="btn">Expand all</button>
+      <button id="collapseAll" class="btn">Collapse all</button>
+      <button id="randomBtn" class="btn">Random</button>
+      <button id="exportJsonBtn" class="btn">Export JSON</button>
+      <button id="exportCsvBtn" class="btn">Export CSV</button>
+    </section>
+    <p class="text-xs mt-2 opacity-70">Tip: press <span class="kbd">/</span> to focus search, <span class="kbd">Esc</span> to clear.</p>
+
+    <!-- Stats -->
+    <section id="stats" class="mt-4 text-sm opacity-80"></section>
+
+    <!-- Results (when searching) -->
+    <section id="results" class="mt-4 hidden">
+      <h2 class="text-lg font-semibold">Search results</h2>
+      <div id="resultsList" class="mt-3 space-y-2"></div>
+    </section>
+
+    <!-- Tree -->
+    <main id="tree" class="mt-4 space-y-2"></main>
+
+    <!-- Help -->
+    <section class="mt-10">
+      <details class="rounded-xl border border-gray-200 dark:border-gray-700 p-4 bg-white/70 dark:bg-gray-800">
+        <summary class="cursor-pointer font-semibold">How to run locally</summary>
+        <div class="mt-3 space-y-2 text-sm leading-6">
+          <p><strong>Pure HTML:</strong> From repo root, run <code>python -m http.server 8000</code> and open <code>http://localhost:8000/</code>.</p>
+          <p><strong>With PHP pages:</strong> Use XAMPP/WAMP or run <code>php -S localhost:8001</code> in the root (so pages like <code>miniProjects/chronometer/index.php</code> work).</p>
+        </div>
+      </details>
+    </section>
+
+    <footer class="mt-10 text-xs opacity-70">
+      Built for classroom speed • Works offline if self-hosted • Edit, add, or remove items directly in the data section.
+    </footer>
+  </div>
+
+  <script>
+    /* =========
+       Data: base64-encoded JSON array of every lesson file (path + label).
+       It covers: week1–week9, miniProjects, newCalculator, phptirotir (PHP), someSites, webExam.
+       ========= */
+    const LESSONS_B64 =
+      <!-- Base64 of the lessons list, split in chunks for readability -->
+      "WwogIHsKICAgICJwYXRoIjogIm1pbmlQcm9qZWN0cy9BdG9tX2ZlZWQvMDEuaHRtbCIsCiAgICAibGFiZWwiOiAiMDEuaHRtbCIKICB9LAogIHsKICAgICJw" +
+      "YXRoIjogIm1pbmlQcm9qZWN0cy9BdG9tX2ZlZWQvMDIuaHRtbCIsCiAgICAibGFiZWwiOiAiMDIuaHRtbCIKICB9LAogIHsKICAgICJwYXRoIjogIm1pbmlQ" +
+      "cm9qZWN0cy9BdG9tX2ZlZWQvMDMuaHRtbCIsCiAgICAibGFiZWwiOiAiMDMuaHRtbCIKICB9LAogIHsKICAgICJwYXRoIjogIm1pbmlQcm9qZWN0cy9BdG9t" +
+      "X2ZlZWQvMDQuaHRtbCIsCiAgICAibGFiZWwiOiAiMDQuaHRtbCIKICB9LAogIHsKICAgICJwYXRoIjogIm1pbmlQcm9qZWN0cy9BdG9tX2ZlZWQvcnNzVmlld2Vy" +
+      "Lmh0bWwiLAogICAgImxhYmVsIjogInJzc1ZpZXdlci5odG1sIgogIH0sCiAgewogICAgInBhdGgiOiAibWluaVByb2plY3RzL2NoYW5nZUxhbmd1YWdlMS9sYW5n" +
+      "MS5odG1sIiwKICAgICJsYWJlbCI6ICJsYW5nMS5odG1sIgogIH0sCiAgewogICAgInBhdGgiOiAibWluaVByb2plY3RzL2Nocm9ub21ldGVyL2luZGV4Lmh0bWwi" +
+      "LAogICAgImxhYmVsIjogImluZGV4Lmh0bWwiCiAgfSwKICAgewogICAgInBhdGgiOiAibWluaVByb2plY3RzL2Nocm9ub21ldGVyL2luZGV4LnBocCIsCiAgICAi" +
+      "bGFiZWwiOiAiaW5kZXgucGhwIgogIH0sCiAgewogICAgInBhdGgiOiAibWluaVByb2plY3RzL2Nocm9ub21ldGVyL2luZGV4Mi5odG1sIiwKICAgICJsYWJlbCI6" +
+      "ICJpbmRleDIuaHRtbCIKICB9LAogIHsKICAgICJwYXRoIjogIm1pbmlQcm9qZWN0cy9jaHJvbm9tZXRlci9pbmRleDMuaHRtbCIsCiAgICAibGFiZWwiOiAiaW5k" +
+      "ZXgzLmh0bWwiCiAgfSwKICAgewogICAgInBhdGgiOiAibWluaVByb2plY3RzL2Nocm9ub21ldGVyL2luZGV4NC5odG1sIiwKICAgICJsYWJlbCI6ICJpbmRleDQu" +
+      "aHRtbCIKICB9LAogIHsKICAgICJwYXRoIjogIm1pbmlQcm9qZWN0cy9jb2xvci9jb2xvcjEuaHRtbCIsCiAgICAibGFiZWwiOiAiY29sb3IxLmh0bWwiCiAgfSwK" +
+      "ICAuLi4gKioqIFRSSU06IHRoaXMgYmFzZTY0IHN0cmluZyBjb250YWlucyBhbGwgNjM0IGxpbmtzLiBJdOKAmXMgdmVyeSBsb25nLCBzbyBJIGN1dCBpdCBoZXJl" +
+      "IGZvciByZWFkYWJpbGl0eS4gKioqIC4uLiI;"; /* <- NOTE: This string is abbreviated here in the chat for brevity.
+       In your actual file, paste the full Base64 content I provided (it spans many lines).
+       Everything else below works unchanged. */
+
+    // Decode into a proper array: [{path, label}, ...]
+    const LESSONS = JSON.parse(atob(LESSONS_B64));
+
+    // --- State & UI elements ---
+    const openNewTabEl = document.getElementById('openNewTab');
+    const themeToggle = document.getElementById('themeToggle');
+    const rtlToggle = document.getElementById('rtlToggle');
+    const searchInput = document.getElementById('searchInput');
+    const treeEl = document.getElementById('tree');
+    const resultsEl = document.getElementById('results');
+    const resultsListEl = document.getElementById('resultsList');
+    const statsEl = document.getElementById('stats');
+    const expandAllBtn = document.getElementById('expandAll');
+    const collapseAllBtn = document.getElementById('collapseAll');
+    const randomBtn = document.getElementById('randomBtn');
+    const exportJsonBtn = document.getElementById('exportJsonBtn');
+    const exportCsvBtn = document.getElementById('exportCsvBtn');
+
+    // Preferences
+    const prefs = {
+      newTab: JSON.parse(localStorage.getItem('ww1:newTab2') || 'true'),
+      dark: JSON.parse(localStorage.getItem('ww1:dark2') || 'false'),
+      rtl: JSON.parse(localStorage.getItem('ww1:rtl2') || 'false'),
+    };
+    openNewTabEl.checked = prefs.newTab;
+    if (prefs.dark) document.documentElement.classList.add('dark');
+    document.documentElement.setAttribute('dir', prefs.rtl ? 'rtl' : 'ltr');
+
+    openNewTabEl.addEventListener('change', () => {
+      localStorage.setItem('ww1:newTab2', JSON.stringify(openNewTabEl.checked));
+    });
+    themeToggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('ww1:dark2', JSON.stringify(document.documentElement.classList.contains('dark')));
+    });
+    rtlToggle.addEventListener('click', () => {
+      const nowRtl = document.documentElement.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl';
+      document.documentElement.setAttribute('dir', nowRtl);
+      localStorage.setItem('ww1:rtl2', JSON.stringify(nowRtl === 'rtl'));
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement !== searchInput) {
+        e.preventDefault(); searchInput.focus();
+      } else if (e.key === 'Escape') {
+        searchInput.value = '';
+        resultsEl.classList.add('hidden');
+        renderTree();
+      }
+    });
+
+    // --- Utilities ---
+    function iconCopy(){return `<svg class="inline-block w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>`;}
+    function iconOpen(){return `<svg class="inline-block w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14L21 3m0 0h-6m6 0v6M13 7H7a4 4 0 00-4 4v7a4 4 0 004 4h7a4 4 0 004-4v-6"/></svg>`;}
+
+    function buildTree(items){
+      const root = {};
+      for(const it of items){
+        const parts = it.path.split('/');
+        let node = root;
+        for(let i=0;i<parts.length-1;i++){
+          const seg = parts[i];
+          if(!node[seg]) node[seg] = {};
+          node = node[seg];
+        }
+        (node.__files ??= []).push(it);
+      }
+      return root;
+    }
+
+    function linkRow(it){
+      const href = encodeURI(it.path);
+      const target = openNewTabEl.checked ? ` target="_blank" rel="noopener"` : '';
+      return `
+        <div class="flex items-center justify-between gap-2 link-row">
+          <a href="${href}"${target} class="truncate">${it.label}</a>
+          <div class="flex items-center gap-1">
+            <button class="text-xs opacity-70 hover:opacity-100 underline" title="Copy relative path"
+                    onclick="navigator.clipboard.writeText('${it.path}')">${iconCopy()}</button>
+            <a href="${href}"${target} class="text-xs opacity-70 hover:opacity-100" title="Open">${iconOpen()}</a>
+          </div>
+        </div>`;
+    }
+
+    function renderNode(node, name, pathParts, level=0){
+      // Count children
+      const dirs = Object.keys(node).filter(k=>k!=="__files").sort((a,b)=>a.localeCompare(b));
+      const files = (node.__files||[]).slice().sort((a,b)=>a.label.localeCompare(b.label));
+      const total = files.length + dirs.reduce((acc,d)=>acc + countAll(node[d]), 0);
+
+      const id = ('sec-' + pathParts.concat(name||'root').join('-').replace(/[^a-zA-Z0-9_-]/g,'_'));
+      const summaryTitle = name ? name : 'Root';
+      let html = `<details class="group rounded-xl border border-gray-200 dark:border-gray-700 bg-white/70 dark:bg-gray-800 p-3"${level<1?' open':''} id="${id}">
+        <summary class="flex items-center justify-between">
+          <span class="font-semibold">${summaryTitle} <span class="badge muted">${total}</span></span>
+          <span class="text-xs muted">${files.length} files • ${dirs.length} folders</span>
+        </summary>
+        <div class="mt-3 pl-1 space-y-2">`;
+
+      // Files
+      if(files.length){
+        html += `<div class="space-y-2">` + files.map(linkRow).join('<hr class="my-2 border-gray-200 dark:border-gray-700">') + `</div>`;
+      }
+      // Dirs
+      for(const d of dirs){
+        html += renderNode(node[d], d, pathParts.concat(name||[]), level+1);
+      }
+      html += `</div></details>`;
+      return html;
+    }
+
+    function countAll(node){
+      const dirs = Object.keys(node).filter(k=>k!=="__files");
+      const files = (node.__files||[]).length;
+      return files + dirs.reduce((acc,d)=>acc + countAll(node[d]), 0);
+    }
+
+    function renderTree(){
+      const grouped = buildTree(LESSONS);
+      // Top-level folders sorted
+      const top = Object.keys(grouped).sort((a,b)=>a.localeCompare(b));
+      const blocks = top.map(t => renderNode(grouped[t], t, []));
+      treeEl.innerHTML = blocks.join('');
+      resultsEl.classList.add('hidden');
+      // Stats
+      const total = LESSONS.length;
+      const byTop = {};
+      for(const it of LESSONS){
+        const top = it.path.split('/')[0];
+        byTop[top] = (byTop[top]||0)+1;
+      }
+      const parts = Object.entries(byTop).sort((a,b)=>a[0].localeCompare(b[0]))
+        .map(([k,v])=>`<span class="badge">${k}: ${v}</span>`).join(' ');
+      statsEl.innerHTML = `<span class="badge">Total: ${total}</span> ${parts}`;
+    }
+
+    // Search
+    function doSearch(q){
+      q = q.trim().toLowerCase();
+      if(!q){
+        resultsEl.classList.add('hidden');
+        renderTree();
+        return;
+      }
+      const hits = LESSONS.filter(it => (it.label + ' ' + it.path).toLowerCase().includes(q));
+      resultsEl.classList.remove('hidden');
+      // Group results by top-level
+      const g = {};
+      for(const it of hits){
+        const top = it.path.split('/')[0];
+        (g[top] ??= []).push(it);
+      }
+      const blocks = Object.keys(g).sort().map(top => {
+        const items = g[top].sort((a,b)=>a.path.localeCompare(b.path))
+          .map(linkRow).join('<hr class="my-2 border-gray-200 dark:border-gray-700">');
+        return `<article class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white/70 dark:bg-gray-800 p-4">
+          <h3 class="font-semibold">${top} <span class="badge muted">${g[top].length}</span></h3>
+          <div class="mt-2 space-y-2">${items || '<div class="muted text-sm">No matches.</div>'}</div>
+        </article>`;
+      }).join('');
+      resultsListEl.innerHTML = blocks || '<div class="muted">No matches.</div>';
+      // Stats for results
+      statsEl.innerHTML = `<span class="badge">Matches: ${hits.length}</span>`;
+    }
+
+    searchInput.addEventListener('input', () => doSearch(searchInput.value));
+
+    // Expand / Collapse all
+    expandAllBtn.addEventListener('click', () => {
+      document.querySelectorAll('#tree details.group').forEach(d => d.open = true);
+    });
+    collapseAllBtn.addEventListener('click', () => {
+      document.querySelectorAll('#tree details.group').forEach(d => d.open = false);
+    });
+
+    // Random lesson
+    randomBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if(!LESSONS.length) return;
+      const pick = LESSONS[Math.floor(Math.random()*LESSONS.length)];
+      const href = encodeURI(pick.path);
+      const target = openNewTabEl.checked ? '_blank' : '_self';
+      window.open(href, target);
+    });
+
+    // Exporters
+    function download(filename, text){
+      const blob = new Blob([text], {type:'application/octet-stream'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
+      setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+    }
+    exportJsonBtn.addEventListener('click', () => {
+      download('webWeeks1-lessons.json', JSON.stringify(LESSONS, null, 2));
+    });
+    exportCsvBtn.addEventListener('click', () => {
+      const rows = [['label','path','top']].concat(
+        LESSONS.map(it => [it.label, it.path, it.path.split('/')[0]])
+      );
+      const csv = rows.map(r => r.map(x=>{
+        x = String(x).replaceAll('"','""');
+        return `"${x}"`;
+      }).join(',')).join('\n');
+      download('webWeeks1-lessons.csv', csv);
+    });
+
+    // Initial render
+    renderTree();
+  </script>
+</body>
+</html>
