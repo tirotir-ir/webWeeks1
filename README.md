@@ -4,6 +4,10 @@ A compact, classroom-friendly collection of **HTML, CSS, and JavaScript lessons*
 
 ---
 
+This site is live at `https://tirotir-ir.github.io/webWeeks1/`
+
+---
+
 ## Quick start
 
 - **Just open any `.html` file in your browser.** Examples live in `week1`, `week2`, `week3`, and `miniProjects`.
