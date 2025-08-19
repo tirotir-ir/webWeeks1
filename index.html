@@ -3,431 +3,306 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>webWeeks1 — Class Dashboard</title>
+  <title>webWeeks1 — Category Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <meta name="color-scheme" content="light dark" />
   <style>
     .rtl { direction: rtl; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Vazirmatn", Arial, "Noto Sans", "Noto Sans Arabic", sans-serif; }
-    .card:hover { transform: translateY(-2px); }
-    .link-pill { display:inline-block; padding:0.5rem 0.75rem; border:1px solid rgba(100,116,139,.35); border-radius:0.75rem; background: rgba(255,255,255,.7); color: inherit; text-decoration:none; }
-    .link-pill:hover { border-color: rgb(99,102,241); }
+    .card { background: rgba(255,255,255,.7); border:1px solid rgba(100,116,139,.35) }
+    .dark .card { background: rgba(15,23,42,.6); border-color: rgba(148,163,184,.3) }
+    .btn { border:1px solid rgba(100,116,139,.35); border-radius:.75rem; padding:.5rem .75rem }
+    details > summary { cursor:pointer; list-style:none; }
+    details > summary::-webkit-details-marker { display:none }
+    table { width:100%; border-collapse:separate; border-spacing:0; }
+    thead th { position:sticky; top:0; background:rgba(248,250,252,.7); backdrop-filter:blur(6px) }
+    .dark thead th { background:rgba(15,23,42,.7) }
+    th, td { padding:.55rem .6rem; border-bottom:1px solid rgba(100,116,139,.22) }
+    tbody tr:hover { background: rgba(99,102,241,.08) }
+    .badge { font-size:.7rem; padding:.15rem .45rem; border:1px solid rgba(100,116,139,.35); border-radius:.5rem }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 transition">
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100">
   <header class="border-b border-slate-200/70 dark:border-slate-700/60 sticky top-0 bg-white/70 dark:bg-slate-900/70 backdrop-blur z-10">
     <div class="max-w-6xl mx-auto p-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
       <div>
-        <h1 class="text-2xl font-bold">webWeeks1 — Class Dashboard</h1>
-        <p class="text-slate-600 dark:text-slate-300 text-sm">
-          Quick launcher for all lessons, weeks, projects, and practice files. Use search, or browse by section.
-        </p>
+        <h1 class="text-2xl font-bold">webWeeks1 — Category Dashboard</h1>
+        <p class="text-sm text-slate-600 dark:text-slate-300">Browse by section. Every lesson is listed with a readable title.</p>
       </div>
       <div class="flex gap-2 flex-wrap">
-        <button id="randomBtn" class="px-3 py-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-500">Random lesson 🎲</button>
-        <button id="darkBtn" class="px-3 py-2 rounded-xl border">Toggle Dark</button>
-        <button id="rtlBtn" class="px-3 py-2 rounded-xl border">RTL / LTR</button>
+        <label class="btn flex items-center gap-2 cursor-pointer"><input id="newTab" type="checkbox" class="h-4 w-4" checked/> Open in new tab</label>
+        <button id="darkBtn" class="btn">Toggle Dark</button>
+        <button id="rtlBtn" class="btn">RTL / LTR</button>
+        <button id="expandBtn" class="btn">Expand all</button>
+        <button id="collapseBtn" class="btn">Collapse all</button>
       </div>
     </div>
   </header>
 
-  <main class="max-w-6xl mx-auto p-4">
-    <div class="mb-4 flex items-center gap-2">
-      <input id="searchBox" type="search" placeholder="Search lessons (e.g., jQuery, color, pizza, json)…"
-             class="w-full px-4 py-2 rounded-xl border bg-white/70 dark:bg-slate-800/70">
-      <button id="clearBtn" class="px-3 py-2 rounded-xl border">Clear</button>
-    </div>
+  <main class="max-w-6xl mx-auto p-4 space-y-5" id="root"></main>
 
-    <div id="sections" class="grid gap-6"></div>
-  </main>
+  <footer class="max-w-6xl mx-auto p-6 text-xs text-slate-600 dark:text-slate-300">
+    Serve from repo root:
+    <code>python -m http.server 8000</code> (HTML) or <code>php -S localhost:8001</code> (for PHP demos).
+  </footer>
 
   <script>
-    const seq = (from, to, pad = 0) => Array.from({length: (to - from + 1)}, (_, i) => String(i + from).padStart(pad, "0"));
-    const makeItems = (pairs) => pairs.map(([label, href]) => ({label, href}));
-
-    const sectionsData = [
-      {
-        title: "Week 1 — HTML & First Steps",
-        desc: "Intro HTML, simple CSS, marquee demos, first projects.",
-        items: [
-          ...makeItems([
-            ["0.html", "week1/0.html"],
-            ["00.html", "week1/00.html"],
-            ["first0.html", "week1/first0.html"],
-            ["first1.html", "week1/first1.html"],
-            ["html_css1.html", "week1/html_css1.html"],
-            ["css0.html", "week1/css0.html"],
-            ["css1.html", "week1/css1.html"],
-            ["newJS001.html", "week1/newJS001.html"],
-            ["test1.html", "week1/test1.html"],
-            ["projects/lesson1.html", "week1/projects/lesson1.html"],
-            ["projects/two.html", "week1/projects/two.html"]
-          ]),
-          ...[
-            "marquee.html","marquee2.html","marquee3.html","marquee4.html","marquee5.html","marquee6.html",
-            "marquee7.html","marquee8.html","marquee9.html","marquee10.html","marquee11.html","world02.html"
-          ].map(f => ({label: `marquee/${f}`, href: `week1/marquee/${f}`}))
-        ]
-      },
-
-      {
-        title: "Week 2 — CSS & Page Structure",
-        desc: "Colors, CSS basics, small multi-page HTML sites.",
-        items: [
-          ...seq(1,8).map(n => ({ label: `color/color${n}.html`, href: `week2/color/color${n}.html` })),
-          ...["css0","css1","css2","css3","css4","css5","css6","css7","css8","css9",
-              "css91","css92","css93","css94","css95","css96","css97","css98","css99"]
-            .map(name => ({ label: `css/${name}.html`, href: `week2/css/${name}.html` })),
-          ...makeItems([
-            ["html/wwwww/index.html", "week2/html/wwwww/index.html"],
-            ["html/wwwww/about.html", "week2/html/wwwww/about.html"],
-            ["html/wwwww/contact.html", "week2/html/wwwww/contact.html"],
-            ["html/wwwww/university.html", "week2/html/wwwww/university.html"],
-            ["html/ww/01b.html", "week2/html/ww/01b.html"]
-          ])
-        ]
-      },
-
-      {
-        title: "Week 3 — JavaScript Foundations + Mini Projects",
-        desc: "JS exercises and mini projects (Google, Blog, Music, Pizza).",
-        items: [
-          ...makeItems([
-            ["newJS/001.html","week3/newJS/001.html"],
-            ["newJS/002.html","week3/newJS/002.html"],
-            ["newJS/002-web.html","week3/newJS/002-web.html"],
-            ["newJS/003.HTML","week3/newJS/003.HTML"],
-            ["newJS/004.html","week3/newJS/004.html"],
-            ["newJS/005.html","week3/newJS/005.html"],
-            ["newJS/006.html","week3/newJS/006.html"],
-            ["newJS/007.html","week3/newJS/007.html"],
-            ["newJS/008.html","week3/newJS/008.html"],
-            ["newJS/009.html","week3/newJS/009.html"],
-            ["newJS/0031-function1.html","week3/newJS/0031-function1.html"],
-            ["newJS/0032-function2.html","week3/newJS/0032-function2.html"],
-            ["newJS/0022-logic.html","week3/newJS/0022-logic.html"],
-            ["newJS/0023-while.html","week3/newJS/0023-while.html"],
-            ["newJS/0024-for.html","week3/newJS/0024-for.html"],
-            ["newJS/0024-for--.html","week3/newJS/0024-for--.html"],
-            ["newJS/0025-for2.html","week3/newJS/0025-for2.html"],
-            ["newJS/0026-while2.html","week3/newJS/0026-while2.html"],
-            ["newJS/0027-for3.html","week3/newJS/0027-for3.html"],
-            ["newJS/0028-for4.html","week3/newJS/0028-for4.html"],
-            ["newJS/0029-switch.html","week3/newJS/0029-switch.html"],
-            ["newJS/0030-switch2.html","week3/newJS/0030-switch2.html"],
-            ["newJS/js1.html","week3/newJS/js1.html"],
-            ["newJS/game1.html","week3/newJS/game1.html"]
-          ]),
-          ...makeItems([
-            ["projects/blog1/blogBootstrap.html","week3/projects/blog1/blogBootstrap.html"],
-            ["projects/google1/google1.html","week3/projects/google1/google1.html"],
-            ["projects/music/music1.html","week3/projects/music/music1.html"],
-            ["pizza3.html","week3/pizza3.html"]
-          ])
-        ]
-      },
-
-      {
-        title: "Week 4 — Intermediate JS + Site Pages",
-        desc: "More JS patterns plus a small multi-page site.",
-        items: [
-          ...makeItems([
-            ["newJS/001.html","week4/newJS/001.html"],
-            ["newJS/0010.html","week4/newJS/0010.html"],
-            ["newJS/0011.html","week4/newJS/0011.html"],
-            ["newJS/0012.html","week4/newJS/0012.html"],
-            ["newJS/0013.html","week4/newJS/0013.html"],
-            ["newJS/0014.html","week4/newJS/0014.html"],
-            ["newJS/0015.html","week4/newJS/0015.html"],
-            ["newJS/0016.html","week4/newJS/0016.html"],
-            ["newJS/0017.html","week4/newJS/0017.html"],
-            ["newJS/0018.html","week4/newJS/0018.html"],
-            ["newJS/0019.html","week4/newJS/0019.html"],
-            ["newJS/002.html","week4/newJS/002.html"],
-            ["newJS/002-web.html","week4/newJS/002-web.html"],
-            ["newJS/0020.html","week4/newJS/0020.html"],
-            ["newJS/0021.html","week4/newJS/0021.html"],
-            ["newJS/0022-logic.html","week4/newJS/0022-logic.html"],
-            ["newJS/0023-while.html","week4/newJS/0023-while.html"],
-            ["newJS/0024-for.html","week4/newJS/0024-for.html"],
-            ["newJS/0024-for--.html","week4/newJS/0024-for--.html"],
-            ["newJS/0025-for2.html","week4/newJS/0025-for2.html"],
-            ["newJS/0026-while2.html","week4/newJS/0026-while2.html"],
-            ["newJS/0027-for3.html","week4/newJS/0027-for3.html"],
-            ["newJS/0028-for4.html","week4/newJS/0028-for4.html"],
-            ["newJS/0029-switch.html","week4/newJS/0029-switch.html"],
-            ["newJS/0030-switch2.html","week4/newJS/0030-switch2.html"],
-            ["newJS/0031-function1.html","week4/newJS/0031-function1.html"],
-            ["newJS/0032-function2.html","week4/newJS/0032-function2.html"],
-            ["projects/login/login1.html","week4/projects/login/login1.html"],
-            ["projects/WebPage1/htmlnew1.html","week4/projects/WebPage1/htmlnew1.html"],
-            ["projects/WebPage1/about.html","week4/projects/WebPage1/about.html"],
-            ["projects/WebPage1/contact.html","week4/projects/WebPage1/contact.html"],
-            ["projects/WebPage1/projects.html","week4/projects/WebPage1/projects.html"]
-          ])
-        ]
-      },
-
-      {
-        title: "Week 5 — Animations & jQuery + Apps",
-        desc: "CSS/JS animations, jQuery series, plus product/bank/flight mini-apps.",
-        items: [
-          ...makeItems([
-            ["5js_css_jQ/00000.html","week5/5js_css_jQ/00000.html"],
-            ["5js_css_jQ/Anime.js1.html","week5/5js_css_jQ/Anime.js1.html"],
-            ["5js_css_jQ/css-anim001.html","week5/5js_css_jQ/css-anim001.html"],
-            ["5js_css_jQ/css-anim1.html","week5/5js_css_jQ/css-anim1.html"],
-            ["5js_css_jQ/css-anim2.html","week5/5js_css_jQ/css-anim2.html"],
-            ["5js_css_jQ/css-anim3.html","week5/5js_css_jQ/css-anim3.html"],
-            ["5js_css_jQ/css-anim4.html","week5/5js_css_jQ/css-anim4.html"],
-            ["5js_css_jQ/css-anim5.html","week5/5js_css_jQ/css-anim5.html"],
-            ["5js_css_jQ/dice.html","week5/5js_css_jQ/dice.html"],
-            ["5js_css_jQ/GSAP1.html","week5/5js_css_jQ/GSAP1.html"],
-            ["5js_css_jQ/js-function.html","week5/5js_css_jQ/js-function.html"],
-            ["5js_css_jQ/timer.html","week5/5js_css_jQ/timer.html"],
-            ["5js_css_jQ/Typed.js1.html","week5/5js_css_jQ/Typed.js1.html"],
-            ["5js_css_jQ/vivus1.html","week5/5js_css_jQ/vivus1.html"],
-            ...seq(1,23).map(n => ({label: `5js_css_jQ/jQuery${n}.html`, href: `week5/5js_css_jQ/jQuery${n}.html`})),
-            ["AnimatedProduct/AnimatedProduct.html","week5/AnimatedProduct/AnimatedProduct.html"],
-            ["bank/atm1.html","week5/bank/atm1.html"],
-            ["bank/interest1.html","week5/bank/interest1.html"],
-            ["bank/Loan1.html","week5/bank/Loan1.html"],
-            ["bank/Mortgage1.html","week5/bank/Mortgage1.html"],
-            ["flight1/Flight1.html","week5/flight1/Flight1.html"]
-          ]).map(([label, href]) => ({label, href}))
-        ]
-      },
-
-      {
-        title: "Week 6 — More Animations & Icons",
-        desc: "More animation drills, icon page, extended practice.",
-        items: [
-          ...makeItems([
-            ["5js_css_jQ/001.html","week6/5js_css_jQ/001.html"],
-            ["5js_css_jQ/002.html","week6/5js_css_jQ/002.html"],
-            ["5js_css_jQ/003.html","week6/5js_css_jQ/003.html"],
-            ["5js_css_jQ/004.html","week6/5js_css_jQ/004.html"],
-            ["5js_css_jQ/005.html","week6/5js_css_jQ/005.html"],
-            ["5js_css_jQ/006.html","week6/5js_css_jQ/006.html"],
-            ["5js_css_jQ/009.html","week6/5js_css_jQ/009.html"],
-            ["5js_css_jQ/12.html","week6/5js_css_jQ/12.html"],
-            ["5js_css_jQ/13.html","week6/5js_css_jQ/13.html"],
-            ["5js_css_jQ/14.html","week6/5js_css_jQ/14.html"],
-            ["5js_css_jQ/animate1.html","week6/5js_css_jQ/animate1.html"],
-            ["5js_css_jQ/animate2.html","week6/5js_css_jQ/animate2.html"],
-            ["5js_css_jQ/animateAll.html","week6/5js_css_jQ/animateAll.html"],
-            ["icons/icons1.html","week6/icons/icons1.html"]
-          ])
-        ]
-      },
-
-      {
-        title: "Week 7 — Practice Set",
-        desc: "Another round of animations and jQuery drills.",
-        items: [
-          ...makeItems([
-            ["5js_css_jQ/00000.html","week7/5js_css_jQ/00000.html"],
-            ["5js_css_jQ/Anime.js1.html","week7/5js_css_jQ/Anime.js1.html"],
-            ["5js_css_jQ/css-anim001.html","week7/5js_css_jQ/css-anim001.html"],
-            ["5js_css_jQ/css-anim1.html","week7/5js_css_jQ/css-anim1.html"],
-            ["5js_css_jQ/css-anim2.html","week7/5js_css_jQ/css-anim2.html"],
-            ["5js_css_jQ/css-anim3.html","week7/5js_css_jQ/css-anim3.html"],
-            ["5js_css_jQ/css-anim4.html","week7/5js_css_jQ/css-anim4.html"],
-            ["5js_css_jQ/css-anim5.html","week7/5js_css_jQ/css-anim5.html"],
-            ["5js_css_jQ/dice.html","week7/5js_css_jQ/dice.html"],
-            ["5js_css_jQ/GSAP1.html","week7/5js_css_jQ/GSAP1.html"],
-            ...seq(1,23).map(n => ({label: `5js_css_jQ/jQuery${n}.html`, href: `week7/5js_css_jQ/jQuery${n}.html`}))
-          ])
-        ]
-      },
-
-      {
-        title: "Week 8 — Data Formats (CSV / JSON / XML)",
-        desc: "Reading & rendering structured data.",
-        items: [
-          ...makeItems([
-            ["DataFormats/001.html","week8/DataFormats/001.html"],
-            ["DataFormats/002.html","week8/DataFormats/002.html"],
-            ["DataFormats/003.html","week8/DataFormats/003.html"],
-            ["json/02.html","week8/json/02.html"],
-            ["json/03.html","week8/json/03.html"],
-            ["json/04.html","week8/json/04.html"],
-            ["json/05.html","week8/json/05.html"],
-            ["json/new.html","week8/json/new.html"],
-            ["xml/index.html","week8/xml/index.html"],
-            ["XML2/simple.xsl","week8/XML2/simple.xsl"],
-            ["all-html.html","week8/all-html.html"],
-            ["1.html","week8/1.html"]
-          ])
-        ]
-      },
-
-      {
-        title: "Week 9 — Mini Demos",
-        desc: "Tiny pages to practice DOM & events.",
-        items: makeItems([
-          ["background-color.html","week9/background-color.html"],
-          ["color.html","week9/color.html"],
-          ["Countdown .html","week9/Countdown .html"],
-          ["Countdown2.html","week9/Countdown2.html"],
-          ["dynamicGreeting.html","week9/dynamicGreeting.html"],
-          ["quote.html","week9/quote.html"],
-          ["quote2.html","week9/quote2.html"],
-          ["scrollToTop.html","week9/scrollToTop.html"],
-          ["visitor.html","week9/visitor.html"]
-        ])
-      },
-
-      {
-        title: "Mini-Projects (Folder)",
-        desc: "Atom/RSS, Chronometer, Email form, Google Charts, Utilities, Viruses demo, Animations, XML…",
-        items: [
-          ...seq(1,4,2).map(n => ({label: `Atom_feed/${String(n).padStart(2,"0")}.html`, href: `miniProjects/Atom_feed/${String(n).padStart(2,"0")}.html`})),
-          {label: "Atom_feed/rssViewer.html", href: "miniProjects/Atom_feed/rssViewer.html"},
-          ...["index.html","index2.html","index3.html","index4.html"].map(f => ({label: `chronometer/${f}`, href: `miniProjects/chronometer/${f}`})),
-          ...seq(1,8).map(n => ({label: `color/color${n}.html`, href: `miniProjects/color/color${n}.html`})),
-          {label: "cssMenu/cssMenu1.html", href: "miniProjects/cssMenu/cssMenu1.html"},
-          {label: "email-form/index.html", href: "miniProjects/email-form/index.html"},
-          ...["00011","001","0010","002","003","004","005","006","007","008","008fa","009"].map(n => ({label:`Google charts/${n}.html`, href:`miniProjects/Google charts/${n}.html`})),
-          ...["01","02","03","04","05","06","10","11"].map(n => ({label: `someAnime1/${n}.html`, href: `miniProjects/someAnime1/${n}.html`})),
-          ...["text1","text2","text3"].map(n => ({label: `someAnime1/${n}.html`, href: `miniProjects/someAnime1/${n}.html`})),
-          ...["calc222","counter1","counter2","digit-calc1","digit-calc2","digit-calc3",
-              "todolist1","todolist2","todolist3","todolist4","todolist5",
-              "txt-save1","txt-save2"].map(n => ({label: `someUtilities1/${n}.html`, href: `miniProjects/someUtilities1/${n}.html`})),
-          ...["0","00","000","0000","05","06","07","08","virus9"].map(n => ({label:`htmlViruses/${n}.html`, href:`miniProjects/htmlViruses/${n}.html`})),
-          {label: "xml/index.html", href: "miniProjects/xml/index.html"},
-          {label: "XML2/cd_catalog.xml", href: "miniProjects/XML2/cd_catalog.xml"},
-          {label: "XML2/cd_catalog_with_css.xml", href: "miniProjects/XML2/cd_catalog_with_css.xml"},
-          {label: "XML2/simple.xsl", href: "miniProjects/XML2/simple.xsl"},
-          {label: "XML2/simplexsl.xml", href: "miniProjects/XML2/simplexsl.xml"}
-        ]
-      },
-
-      {
-        title: "Calculators",
-        desc: "Multiple calculator UIs and themes.",
-        items: makeItems([
-          ["calculator1.html","newCalculator/calculator1.html"],
-          ["calculator1-.html","newCalculator/calculator1-.html"],
-          ["calculator2.html","newCalculator/calculator2.html"],
-          ["calculator2-.html","newCalculator/calculator2-.html"],
-          ["calculator3.html","newCalculator/calculator3.html"],
-          ["calculator3-.html","newCalculator/calculator3-.html"],
-          ["calculator3--.html","newCalculator/calculator3--.html"],
-          ["eval.html","newCalculator/eval.html"],
-          ["simpleDarkLight.html","newCalculator/simpleDarkLight.html"]
-        ])
-      },
-
-      {
-        title: "PHP Practice (phptirotir)",
-        desc: "Basic PHP pages 01–34 + extras.",
-        items: [
-          ...seq(1,34,2).map(n => ({label: `${String(n).padStart(2,"0")}.php`, href: `phptirotir/${String(n).padStart(2,"0")}.php`})),
-          {label: "phpw.php", href: "phptirotir/phpw.php"}
-        ]
-      },
-
-      {
-        title: "Full Sites / Templates",
-        desc: "Ready-made templates for study and customization.",
-        items: [
-          {label: "2133_moso_interior (index)", href: "someSites/2133_moso_interior/index.html"},
-          {label: "2137_barista_cafe (index)", href: "someSites/2137_barista_cafe/index.html"},
-          {label: "Villa Agency (index)", href: "someSites/templatemo_591_villa_agency/index.html"},
-          {label: "Villa Agency / properties", href: "someSites/templatemo_591_villa_agency/properties.html"},
-          {label: "Villa Agency / property-details", href: "someSites/templatemo_591_villa_agency/property-details.html"},
-          {label: "Villa Agency / contact", href: "someSites/templatemo_591_villa_agency/contact.html"}
-        ]
-      },
-
-      {
-        title: "Web Exam",
-        desc: "Step-by-step HTML/JS tasks + small projects.",
-        items: [
-          ...makeItems([
-            ["1/001.html","webExam/1/001.html"],
-            ["1/002.html","webExam/1/002.html"],
-            ["1/003.html","webExam/1/003.html"],
-            ["1/test.html","webExam/1/test.html"],
-            ["2/004.html","webExam/2/004.html"],
-            ["2/005.html","webExam/2/005.html"],
-            ["2/006.html","webExam/2/006.html"],
-            ["3/007.html","webExam/3/007.html"],
-            ["3/008.html","webExam/3/008.html"],
-            ["3/009.html","webExam/3/009.html"],
-            ["4/0010.html","webExam/4/0010.html"]
-          ]),
-          ...makeItems([
-            ["js-projects/0001.html","webExam/js-projects/0001.html"],
-            ["js-projects/001.html","webExam/js-projects/001.html"],
-            ["js-projects/00021.html","webExam/js-projects/00021.html"],
-            ["js-projects/00021-.html","webExam/js-projects/00021-.html"],
-            ["js-projects/00021--.html","webExam/js-projects/00021--.html"],
-            ["js-projects/00021---.html","webExam/js-projects/00021---.html"],
-            ["js-projects/00021----fa.html","webExam/js-projects/00021----fa.html"]
-          ])
-        ]
-      }
-    ];
-
-    const sectionsEl = document.getElementById("sections");
-    const searchBox = document.getElementById("searchBox");
-    const clearBtn = document.getElementById("clearBtn");
-    const darkBtn = document.getElementById("darkBtn");
-    const rtlBtn = document.getElementById("rtlBtn");
-    const randomBtn = document.getElementById("randomBtn");
-
-    const render = (q = "") => {
-      sectionsEl.innerHTML = "";
-      const query = q.trim().toLowerCase();
-      const norm = s => s.normalize("NFD").replace(/\\p{Diacritic}/gu,'').toLowerCase();
-
-      sectionsData.forEach(sec => {
-        const items = !query
-          ? sec.items
-          : sec.items.filter(x => norm(x.label).includes(query));
-        if (!items.length) return;
-
-        const card = document.createElement("section");
-        card.className = "card border rounded-2xl p-4 bg-white/70 dark:bg-slate-800/60 shadow-sm";
-
-        card.innerHTML = \`
-          <div class="flex items-start justify-between gap-3 mb-3">
-            <div>
-              <h2 class="text-lg font-semibold">\${sec.title}</h2>
-              <p class="text-slate-600 dark:text-slate-300 text-sm">\${sec.desc || ""}</p>
-            </div>
-            <span class="text-xs px-2 py-1 rounded-full border">\${sec.items.length} files</span>
-          </div>
-          <div class="grid gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"></div>
-        \`;
-
-        const grid = card.querySelector("div.grid");
-        items.forEach(it => {
-          const a = document.createElement("a");
-          a.href = it.href;
-          a.target = "_blank";
-          a.rel = "noopener";
-          a.className = "link-pill";
-          a.textContent = it.label;
-          grid.appendChild(a);
-        });
-
-        sectionsEl.appendChild(card);
-      });
+    // ----------  Helpers ----------
+    const fileTitle = (path) => {
+      // Turn a filename into a friendly title
+      const fname = path.split('/').pop().replace(/\.(html|php|xml|xsl)$/i,'');
+      // Common tokens to prettify
+      const map = {
+        'css':'CSS','html':'HTML','js':'JS','jquery':'jQuery',
+        'gsap':'GSAP','anime':'Anime','chart':'Chart','json':'JSON','xml':'XML','xsl':'XSL'
+      };
+      let base = fname
+        .replace(/_/g,' ')
+        .replace(/-/g,' ')
+        .replace(/(\d)([A-Za-z])/g,'$1 $2')      // 21fa -> 21 fa
+        .replace(/([a-z])([A-Z])/g,'$1 $2');     // camelCase -> camel Case
+      // Normalize tokens
+      base = base.split(' ').map(w=>{
+        const k = w.toLowerCase();
+        if (map[k]) return map[k];
+        if (/^0+\d+$/.test(w)) return w;        // keep zero-padded numbers
+        if (/^\d+$/.test(w)) return w;
+        return w.charAt(0).toUpperCase()+w.slice(1);
+      }).join(' ');
+      return base.trim();
     };
 
-    searchBox.addEventListener("input", e => render(e.target.value));
-    clearBtn.addEventListener("click", () => { searchBox.value = ""; render(""); });
-    darkBtn.addEventListener("click", () => document.documentElement.classList.toggle("dark"));
-    rtlBtn.addEventListener("click", () => document.body.classList.toggle("rtl"));
-    randomBtn.addEventListener("click", () => {
-      const all = sectionsData.flatMap(s => s.items);
-      const pick = all[Math.floor(Math.random() * all.length)];
-      window.open(pick.href, "_blank", "noopener");
+    const linkCell = (href) => {
+      const a = document.createElement('a');
+      a.href = href;
+      a.textContent = href.split('/').slice(-1)[0];
+      a.className = 'underline underline-offset-2';
+      a.title = href;
+      return a;
+    };
+
+    const tableFrom = (files) => {
+      const table = document.createElement('table');
+      table.innerHTML = `
+        <thead>
+          <tr class="text-left text-sm">
+            <th style="width:52%">Title</th>
+            <th>File</th>
+            <th class="text-right">Type</th>
+          </tr>
+        </thead>
+        <tbody></tbody>`;
+      const tb = table.querySelector('tbody');
+      files.forEach(f=>{
+        const tr = document.createElement('tr');
+        const title = fileTitle(f);
+        const type = (/\.(php)$/i.test(f)?'PHP':(/\.(xml)$/i.test(f)?'XML':(/\.(xsl)$/i.test(f)?'XSL':'HTML')));
+        tr.innerHTML = `
+          <td class="align-top"><a class="underline underline-offset-2" href="${f}">${title}</a></td>
+          <td class="align-top"></td>
+          <td class="text-right align-top"><span class="badge">${type}</span></td>`;
+        tr.children[1].appendChild(linkCell(f));
+        tb.appendChild(tr);
+      });
+      return table;
+    };
+
+    const section = (name, desc, files, open=true) => {
+      const wrap = document.createElement('section');
+      wrap.className = 'card rounded-2xl p-4';
+      const details = document.createElement('details');
+      details.open = open;
+      const count = files.length;
+      details.innerHTML = `
+        <summary class="flex items-start justify-between gap-3">
+          <div>
+            <h2 class="text-lg font-semibold">${name}</h2>
+            <p class="text-sm text-slate-600 dark:text-slate-300">${desc||''}</p>
+          </div>
+          <span class="text-xs px-2 py-1 rounded-full border">${count} file${count!==1?'s':''}</span>
+        </summary>`;
+      details.appendChild(tableFrom(files));
+      wrap.appendChild(details);
+      return wrap;
+    };
+
+    // ----------  Catalog (categories with every lesson file) ----------
+    // NOTE: If a specific file is not in your repo, just remove that path below.
+    const W1 = [
+      "week1/0.html","week1/00.html","week1/first0.html","week1/first1.html",
+      "week1/html_css1.html","week1/css0.html","week1/css1.html","week1/newJS001.html","week1/test1.html",
+      "week1/projects/lesson1.html","week1/projects/two.html",
+      "week1/marquee/marquee.html","week1/marquee/marquee2.html","week1/marquee/marquee3.html","week1/marquee/marquee4.html",
+      "week1/marquee/marquee5.html","week1/marquee/marquee6.html","week1/marquee/marquee7.html","week1/marquee/marquee8.html",
+      "week1/marquee/marquee9.html","week1/marquee/marquee10.html","week1/marquee/marquee11.html","week1/marquee/world02.html"
+    ];
+
+    const W2 = [
+      "week2/color/color1.html","week2/color/color2.html","week2/color/color3.html","week2/color/color4.html",
+      "week2/color/color5.html","week2/color/color6.html","week2/color/color7.html","week2/color/color8.html",
+      "week2/css/css0.html","week2/css/css1.html","week2/css/css2.html","week2/css/css3.html","week2/css/css4.html",
+      "week2/css/css5.html","week2/css/css6.html","week2/css/css7.html","week2/css/css8.html","week2/css/css9.html",
+      "week2/css/css91.html","week2/css/css92.html","week2/css/css93.html","week2/css/css94.html","week2/css/css95.html",
+      "week2/css/css96.html","week2/css/css97.html","week2/css/css98.html","week2/css/css99.html",
+      "week2/html/wwwww/index.html","week2/html/wwwww/about.html","week2/html/wwwww/contact.html","week2/html/wwwww/university.html",
+      "week2/html/ww/01b.html"
+    ];
+
+    const W3 = [
+      "week3/newJS/001.html","week3/newJS/002.html","week3/newJS/002-web.html","week3/newJS/003.HTML","week3/newJS/004.html",
+      "week3/newJS/005.html","week3/newJS/006.html","week3/newJS/007.html","week3/newJS/008.html","week3/newJS/009.html",
+      "week3/newJS/0031-function1.html","week3/newJS/0032-function2.html",
+      "week3/newJS/0022-logic.html","week3/newJS/0023-while.html","week3/newJS/0024-for.html","week3/newJS/0024-for--.html",
+      "week3/newJS/0025-for2.html","week3/newJS/0026-while2.html","week3/newJS/0027-for3.html","week3/newJS/0028-for4.html",
+      "week3/newJS/0029-switch.html","week3/newJS/0030-switch2.html","week3/newJS/js1.html","week3/newJS/game1.html",
+      "week3/projects/blog1/blogBootstrap.html","week3/projects/google1/google1.html","week3/projects/music/music1.html",
+      "week3/pizza3.html"
+    ];
+
+    const W4 = [
+      "week4/newJS/001.html","week4/newJS/0010.html","week4/newJS/0011.html","week4/newJS/0012.html","week4/newJS/0013.html",
+      "week4/newJS/0014.html","week4/newJS/0015.html","week4/newJS/0016.html","week4/newJS/0017.html","week4/newJS/0018.html",
+      "week4/newJS/0019.html","week4/newJS/002.html","week4/newJS/002-web.html","week4/newJS/0020.html","week4/newJS/0021.html",
+      "week4/newJS/0022-logic.html","week4/newJS/0023-while.html","week4/newJS/0024-for.html","week4/newJS/0024-for--.html",
+      "week4/newJS/0025-for2.html","week4/newJS/0026-while2.html","week4/newJS/0027-for3.html","week4/newJS/0028-for4.html",
+      "week4/newJS/0029-switch.html","week4/newJS/0030-switch2.html","week4/newJS/0031-function1.html","week4/newJS/0032-function2.html",
+      "week4/projects/login/login1.html",
+      "week4/projects/WebPage1/htmlnew1.html","week4/projects/WebPage1/about.html","week4/projects/WebPage1/contact.html","week4/projects/WebPage1/projects.html"
+    ];
+
+    const jQ = n => `week5/5js_css_jQ/jQuery${n}.html`;
+    const jQ7 = n => `week7/5js_css_jQ/jQuery${n}.html`;
+
+    const W5 = [
+      "week5/5js_css_jQ/00000.html","week5/5js_css_jQ/Anime.js1.html","week5/5js_css_jQ/css-anim001.html",
+      "week5/5js_css_jQ/css-anim1.html","week5/5js_css_jQ/css-anim2.html","week5/5js_css_jQ/css-anim3.html",
+      "week5/5js_css_jQ/css-anim4.html","week5/5js_css_jQ/css-anim5.html","week5/5js_css_jQ/dice.html","week5/5js_css_jQ/GSAP1.html",
+      "week5/5js_css_jQ/js-function.html","week5/5js_css_jQ/timer.html","week5/5js_css_jQ/Typed.js1.html","week5/5js_css_jQ/vivus1.html",
+      ...Array.from({length:23},(_,i)=>jQ(i+1)),
+      "week5/AnimatedProduct/AnimatedProduct.html","week5/bank/atm1.html","week5/bank/interest1.html","week5/bank/Loan1.html","week5/bank/Mortgage1.html",
+      "week5/flight1/Flight1.html"
+    ];
+
+    const W6 = [
+      "week6/5js_css_jQ/001.html","week6/5js_css_jQ/002.html","week6/5js_css_jQ/003.html","week6/5js_css_jQ/004.html","week6/5js_css_jQ/005.html",
+      "week6/5js_css_jQ/006.html","week6/5js_css_jQ/009.html","week6/5js_css_jQ/12.html","week6/5js_css_jQ/13.html","week6/5js_css_jQ/14.html",
+      "week6/5js_css_jQ/animate1.html","week6/5js_css_jQ/animate2.html","week6/5js_css_jQ/animateAll.html","week6/icons/icons1.html"
+    ];
+
+    const W7 = [
+      "week7/5js_css_jQ/00000.html","week7/5js_css_jQ/Anime.js1.html","week7/5js_css_jQ/css-anim001.html","week7/5js_css_jQ/css-anim1.html",
+      "week7/5js_css_jQ/css-anim2.html","week7/5js_css_jQ/css-anim3.html","week7/5js_css_jQ/css-anim4.html","week7/5js_css_jQ/css-anim5.html",
+      "week7/5js_css_jQ/dice.html","week7/5js_css_jQ/GSAP1.html", ...Array.from({length:23},(_,i)=>jQ7(i+1))
+    ];
+
+    const W8 = [
+      "week8/DataFormats/001.html","week8/DataFormats/002.html","week8/DataFormats/003.html",
+      "week8/json/02.html","week8/json/03.html","week8/json/04.html","week8/json/05.html","week8/json/new.html",
+      "week8/xml/index.html","week8/XML2/simple.xsl","week8/all-html.html","week8/1.html"
+    ];
+
+    const W9 = [
+      "week9/background-color.html","week9/color.html","week9/Countdown .html","week9/Countdown2.html","week9/dynamicGreeting.html",
+      "week9/quote.html","week9/quote2.html","week9/scrollToTop.html","week9/visitor.html"
+    ];
+
+    const MINIP = [
+      "miniProjects/Atom_feed/01.html","miniProjects/Atom_feed/02.html","miniProjects/Atom_feed/03.html","miniProjects/Atom_feed/04.html",
+      "miniProjects/Atom_feed/rssViewer.html",
+      "miniProjects/chronometer/index.html","miniProjects/chronometer/index2.html","miniProjects/chronometer/index3.html","miniProjects/chronometer/index4.html","miniProjects/chronometer/index.php",
+      "miniProjects/color/color1.html","miniProjects/color/color2.html","miniProjects/color/color3.html","miniProjects/color/color4.html",
+      "miniProjects/color/color5.html","miniProjects/color/color6.html","miniProjects/color/color7.html","miniProjects/color/color8.html",
+      "miniProjects/cssMenu/cssMenu1.html","miniProjects/email-form/index.html",
+      "miniProjects/Google charts/00011.html","miniProjects/Google charts/001.html","miniProjects/Google charts/0010.html","miniProjects/Google charts/002.html",
+      "miniProjects/Google charts/003.html","miniProjects/Google charts/004.html","miniProjects/Google charts/005.html","miniProjects/Google charts/006.html",
+      "miniProjects/Google charts/007.html","miniProjects/Google charts/008.html","miniProjects/Google charts/008fa.html","miniProjects/Google charts/009.html",
+      "miniProjects/Google charts/Chart.js.html",
+      "miniProjects/someAnime1/01.html","miniProjects/someAnime1/02.html","miniProjects/someAnime1/03.html","miniProjects/someAnime1/04.html","miniProjects/someAnime1/05.html","miniProjects/someAnime1/06.html",
+      "miniProjects/someAnime1/10.html","miniProjects/someAnime1/11.html","miniProjects/someAnime1/text1.html","miniProjects/someAnime1/text2.html","miniProjects/someAnime1/text3.html",
+      "miniProjects/someUtilities1/calc222.html","miniProjects/someUtilities1/counter1.html","miniProjects/someUtilities1/counter2.html",
+      "miniProjects/someUtilities1/digit-calc1.html","miniProjects/someUtilities1/digit-calc2.html","miniProjects/someUtilities1/digit-calc3.html",
+      "miniProjects/someUtilities1/todolist1.html","miniProjects/someUtilities1/todolist2.html","miniProjects/someUtilities1/todolist3.html","miniProjects/someUtilities1/todolist4.html",
+      "miniProjects/someUtilities1/todolist5.html","miniProjects/someUtilities1/txt-save1.html","miniProjects/someUtilities1/txt-save2.html",
+      "miniProjects/htmlViruses/0.html","miniProjects/htmlViruses/00.html","miniProjects/htmlViruses/000.html","miniProjects/htmlViruses/0000.html",
+      "miniProjects/htmlViruses/05.html","miniProjects/htmlViruses/06.html","miniProjects/htmlViruses/07.html","miniProjects/htmlViruses/08.html","miniProjects/htmlViruses/virus9.html",
+      "miniProjects/xml/index.html","miniProjects/XML2/cd_catalog.xml","miniProjects/XML2/cd_catalog_with_css.xml","miniProjects/XML2/simple.xsl","miniProjects/XML2/simplexsl.xml",
+      "miniProjects/changeLanguage1/lang1.html","miniProjects/Sidebar1/Sidebar1.html","miniProjects/PricingTable/PricingTable.html","miniProjects/PricingTable copy/PricingTable.html","miniProjects/menu/menu1.html","miniProjects/t2s/t2sAll.html"
+    ];
+
+    const CALC = [
+      "newCalculator/calculator1.html","newCalculator/calculator1-.html","newCalculator/calculator2.html","newCalculator/calculator2-.html",
+      "newCalculator/calculator3.html","newCalculator/calculator3-.html","newCalculator/calculator3--.html","newCalculator/eval.html","newCalculator/simpleDarkLight.html"
+    ];
+
+    // 01..34 php + phpw
+    const PHP = Array.from({length:34},(_,i)=>`phptirotir/${String(i+1).padStart(2,'0')}.php`).concat(["phptirotir/phpw.php"]);
+
+    const TEMPL = [
+      "someSites/2133_moso_interior/index.html","someSites/2137_barista_cafe/index.html",
+      "someSites/templatemo_591_villa_agency/index.html","someSites/templatemo_591_villa_agency/properties.html",
+      "someSites/templatemo_591_villa_agency/property-details.html","someSites/templatemo_591_villa_agency/contact.html"
+    ];
+
+    const EXAM = [
+      "webExam/1/001.html","webExam/1/002.html","webExam/1/003.html","webExam/1/test.html",
+      "webExam/2/004.html","webExam/2/005.html","webExam/2/006.html",
+      "webExam/3/007.html","webExam/3/008.html","webExam/3/009.html",
+      "webExam/4/0010.html",
+      "webExam/js-projects/0001.html","webExam/js-projects/001.html","webExam/js-projects/00021.html","webExam/js-projects/00021-.html",
+      "webExam/js-projects/00021--.html","webExam/js-projects/00021---.html","webExam/js-projects/00021----fa.html"
+    ];
+
+    const catalog = [
+      ["Week 1 — HTML & First Steps","Intro HTML, simple CSS, marquees.", W1],
+      ["Week 2 — CSS & Page Structure","Colors, CSS basics, small site.", W2],
+      ["Week 3 — JavaScript Foundations + Mini Projects","Exercises & small projects.", W3],
+      ["Week 4 — Intermediate JS + Site Pages","Loops, functions, and pages.", W4],
+      ["Week 5 — Animations & jQuery + Apps","CSS/JS animations, jQuery series, apps.", W5],
+      ["Week 6 — More Animations & Icons","More animation drills & icons.", W6],
+      ["Week 7 — Practice Set","More animations and jQuery drills.", W7],
+      ["Week 8 — Data Formats (CSV / JSON / XML)","Reading & rendering structured data.", W8],
+      ["Week 9 — Mini Demos","Tiny DOM/event practice pages.", W9],
+      ["Mini-Projects","Atom, Chronometer, Email, Charts, Utilities, XML…", MINIP],
+      ["Calculators","Multiple calculator UIs and themes.", CALC],
+      ["PHP Practice (phptirotir)","Sequential PHP exercises.", PHP],
+      ["Full Sites / Templates","Study real layouts.", TEMPL],
+      ["Web Exam","Tasks & JS mini-projects.", EXAM],
+    ];
+
+    // ----------  Render ----------
+    const root = document.getElementById('root');
+    catalog.forEach(([name, desc, files], idx)=>{
+      root.appendChild(section(name, desc, files, idx<3)); // first few open
     });
 
-    render("");
+    // ----------  Controls ----------
+    const newTab = document.getElementById('newTab');
+    const darkBtn = document.getElementById('darkBtn');
+    const rtlBtn = document.getElementById('rtlBtn');
+    const expandBtn = document.getElementById('expandBtn');
+    const collapseBtn = document.getElementById('collapseBtn');
+
+    const prefs = {
+      newTab: JSON.parse(localStorage.getItem('ww:newTab') || 'true'),
+      dark: JSON.parse(localStorage.getItem('ww:dark') || 'false'),
+      rtl: JSON.parse(localStorage.getItem('ww:rtl') || 'false')
+    };
+    newTab.checked = prefs.newTab;
+    if (prefs.dark) document.documentElement.classList.add('dark');
+    document.body.classList.toggle('rtl', prefs.rtl);
+
+    function applyTargets(){
+      document.querySelectorAll('tbody a').forEach(a=>{
+        if (newTab.checked) { a.target = '_blank'; a.rel = 'noopener'; }
+        else { a.removeAttribute('target'); a.removeAttribute('rel'); }
+      });
+    }
+    applyTargets();
+
+    newTab.onchange = ()=>{ localStorage.setItem('ww:newTab', JSON.stringify(newTab.checked)); applyTargets(); };
+    darkBtn.onclick = ()=>{ document.documentElement.classList.toggle('dark'); localStorage.setItem('ww:dark', JSON.stringify(document.documentElement.classList.contains('dark'))); };
+    rtlBtn.onclick = ()=>{ document.body.classList.toggle('rtl'); localStorage.setItem('ww:rtl', JSON.stringify(document.body.classList.contains('rtl'))); };
+    expandBtn.onclick = ()=> document.querySelectorAll('details').forEach(d=> d.open = true);
+    collapseBtn.onclick = ()=> document.querySelectorAll('details').forEach(d=> d.open = false);
   </script>
 </body>
 </html>
