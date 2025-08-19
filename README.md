@@ -4,7 +4,7 @@ A compact, classroom-friendly collection of **HTML, CSS, and JavaScript lessons*
 
 ---
 
-**Deployed at:** [https://tirotir-ir.github.io/webWeeks1/](https://tirotir-ir.github.io/webWeeks1/)
+**Persian version Deployed at:** [https://tirotir-ir.github.io/webWeeks1/](https://tirotir-ir.github.io/webWeeks1/)
 
 ---
 
